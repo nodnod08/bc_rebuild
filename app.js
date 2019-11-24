@@ -1,13 +1,22 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
-const bodyParser = require('body-parser')
+const parser = require('body-parser')
 const cors = require('cors')
 const passport = require('passport')
 const mongoose = require('mongoose')
+const config = require('./config/database')
 
-const app = exporess()
+mongoose.connect(config.database ,
+ {useNewUrlParser: true, useUnifiedTopology: true}, () => console.log('Database Connected!')
+);
+
+const app = express()
+app.use(cors())
+app.use(parser.json())
+
+app.use('/user', require('./routers/users'))
 
 const port = 3000
 app.listen(port, () => {
-    console.log(`Running on port ${port}`)
+    console.log(`Running on port ${port} `)
 })
