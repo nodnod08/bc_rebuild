@@ -6,15 +6,15 @@ const passport = require('passport')
 const mongoose = require('mongoose')
 const config = require('./config/database')
 
-mongoose.connect(config.database ,
- {useNewUrlParser: true, useUnifiedTopology: true}, () => console.log('Database Connected!')
-);
-
 const app = express()
 app.use(cors())
 app.use(parser.json())
 
 app.use('/user', require('./routers/users'))
+
+mongoose.connect(config.database ,
+ {useNewUrlParser: true, useUnifiedTopology: true}, () => console.log('Database Connected!')
+);
 
 const port = 3000
 app.listen(port, () => {

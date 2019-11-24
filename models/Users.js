@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const database = require('./../config/database')
 
-const UserSchema = mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     firstname: {
         type: String
     },
@@ -23,4 +23,6 @@ const UserSchema = mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Users', UserSchema)
+const User = mongoose.model('Users', UserSchema)
+
+module.exports = User
