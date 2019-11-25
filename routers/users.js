@@ -27,7 +27,7 @@ router.post('/authenticate', (req, res) => {
         password: req.body.password
     }
 
-    User.getUserByUsername(userCredentials, (callback) => {
+    User.authenticate(userCredentials, (callback) => {
         res.json(callback)
     })
 })

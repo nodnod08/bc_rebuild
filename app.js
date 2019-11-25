@@ -10,6 +10,9 @@ const app = express()
 app.use(cors())
 app.use(parser.json())
 
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use('/user', require('./routers/users'))
 
 mongoose.connect(config.database ,

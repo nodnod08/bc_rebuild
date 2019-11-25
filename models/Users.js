@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const database = require('./../config/database')
 
 const UserSchema = new mongoose.Schema({
@@ -29,12 +30,28 @@ module.exports.getUserById = function(id, callback) {
     User.findById(Id, callback)
 }
 
-module.exports.getUserByUsername = function(user, callback) {
+module.exports.authenticate = function(user, callback) {
     const query = { username: user.username }
     User.findOne(query, function(err, result) {
         bcrypt.compare(user.password, result.password, function(err1, res) {
             if(res) {
-                callback({success: true, message: 'Successfuly logged in'})
+                const token = jwt.sign(result.toJSON(), database.jwt_secret, {
+                    expiresIn: 604800
+                })
+
+                callback({
+                    success: true,
+                    message: 'Successfuly logged in',
+                    token: 'JWT '+token,
+                    user: {
+                        id: result._id,
+                        firstname: result.firstname,
+                        lastname: result.lastname,
+                        email: result.email,
+                        username: result.username,
+                        usertype: result.usertype
+                    }
+                })
             } else {
                 callback({success: false, message: 'Username or password inccorect'})
             }
