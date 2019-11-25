@@ -12,21 +12,26 @@ router.post('/register', (req, res) => {
         usertype: req.body.usertype
     })
 
-    newUser.save()
-    .then(data => {
-        res.json(data)
-    })
-    .catch(err => {
-        res.json({
-            message: err
-        })
+    User.addUser(newUser, (err, user) => {
+        if(err) {
+            res.json({success: false, message: 'Failed to register new user'})
+        } else {
+            res.json(user)
+        }
     })
 })
 
-router.get('/users', (req, res) => {
-    const users = User.find()
+router.post('/authenticate', (req, res) => {
+    const userCredentials = {
+        username: req.body.username,
+        password: req.body.password
+    }
 
-    res.send(users)
+    User.getUserByUsername(userCredentials, (callback) => {
+        res.json(callback)
+    })
 })
+
+
 
 module.exports = router

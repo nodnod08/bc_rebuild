@@ -16,7 +16,7 @@ mongoose.connect(config.database ,
  {useNewUrlParser: true, useUnifiedTopology: true}, () => console.log('Database Connected!')
 );
 
-const port = 3000
+const port = 3001
 app.listen(port, () => {
     console.log(`Running on port ${port} `)
 })
