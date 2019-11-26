@@ -8,6 +8,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { IndexComponent } from './components/index/index.component';
+import { ShopComponent } from './components/shop/shop.component';
+import { AboutComponent } from './components/about/about.component';
 
 const appRoutes: Routes = [
   { path: '', 
@@ -19,6 +21,12 @@ const appRoutes: Routes = [
   },
   { path: 'login',
     component: LoginComponent
+  },
+  { path: 'about',
+    component: AboutComponent
+  },
+  { path: 'shop',
+    component: ShopComponent
   }
 ];
 
@@ -28,7 +36,9 @@ const appRoutes: Routes = [
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    IndexComponent
+    IndexComponent,
+    ShopComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
