@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('./../models/Users')
+const passport = require('passport')
 
 router.post('/register', (req, res) => {
     const newUser = new User({
@@ -32,6 +33,11 @@ router.post('/authenticate', (req, res) => {
     })
 })
 
+// router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+//     res.send(req.user);
+// }
+    
+// );
 
 
 module.exports = router

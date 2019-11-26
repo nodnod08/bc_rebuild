@@ -42,7 +42,7 @@ module.exports.authenticate = function(user, callback) {
                 callback({
                     success: true,
                     message: 'Successfuly logged in',
-                    token: 'JWT '+token,
+                    token: 'Bearer '+token,
                     user: {
                         id: result._id,
                         firstname: result.firstname,
