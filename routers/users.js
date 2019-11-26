@@ -33,11 +33,10 @@ router.post('/authenticate', (req, res) => {
     })
 })
 
-// router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-//     res.send(req.user);
-// }
-    
-// );
+router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+        res.send(req.user);
+    }
+);
 
 
 module.exports = router
