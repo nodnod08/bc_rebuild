@@ -33,30 +33,32 @@ module.exports.getUserById = function(id, callback) {
 module.exports.authenticate = function(user, callback) {
     const query = { username: user.username }
     User.findOne(query, function(err, result) {
-        bcrypt.compare(user.password, result.password, function(err1, res) {
-            if(res) {
-                const token = jwt.sign(result.toJSON(), database.jwt_secret, {
-                    expiresIn: 604800
-                })
-
-                callback({
-                    success: true,
-                    message: 'Successfuly logged in',
-                    token: 'Bearer '+token,
-                    user: {
-                        id: result._id,
-                        firstname: result.firstname,
-                        lastname: result.lastname,
-                        email: result.email,
-                        username: result.username,
-                        usertype: result.usertype
-                    }
-                })
-            } else {
-                callback({success: false, message: 'Username or password inccorect'})
-            }
-        });
-
+        if(result) {
+            bcrypt.compare(user.password, result.password, function(err1, res) {
+                if(res) {
+                    const token = jwt.sign(result.toJSON(), database.jwt_secret, {
+                        expiresIn: 604800
+                    })
+    
+                    callback({
+                        success: true,
+                        message: 'Successfuly logged in',
+                        token: 'Bearer '+token,
+                        user: {
+                            id: result._id,
+                            firstname: result.firstname,
+                            lastname: result.lastname,
+                            email: result.email,
+                            username: result.username,
+                            usertype: result.usertype
+                        }
+                    })
+                } else {
+                    callback({success: false, message: 'Username or password inccorect'})
+                }
+            });
+        }
+        callback({success: false, message: 'Username or password inccorect'})
     })
 }
 
