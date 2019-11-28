@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ValidateService } from './../../services/validate/validate.service'
 import { FlashMessagesService } from 'angular2-flash-messages';
-import { AuthService } from './../../services/auth/auth.service';
+import { MyAuthService } from '../../services/auth/myauth.service';
+import { AuthService } from "angularx-social-login";
+import { GoogleLoginProvider } from "angularx-social-login";
+import { SocialUser } from "angularx-social-login";
 
 @Component({
   selector: 'app-login',
@@ -12,14 +15,22 @@ export class LoginComponent implements OnInit {
 
   username:String
   password:String
+  private user: SocialUser;
+  private loggedIn: boolean;
 
   constructor(
     private validateService: ValidateService,
     private _flashMessagesService: FlashMessagesService,
+    private myAuthService: MyAuthService,
     private authService: AuthService
   ) { }
 
   ngOnInit() {
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = (user != null);
+      console.log(user)
+    });
   }
 
   submitForm() {
@@ -30,10 +41,14 @@ export class LoginComponent implements OnInit {
     if(this.validateService.validateLogin(user)) {
       this._flashMessagesService.show('Please, complete all the fields', { cssClass: 'alert-danger', timeout: 4000 });
     } else {
-      this.authService.loginUser(user).subscribe(data => {
+      this.myAuthService.loginUser(user).subscribe(data => {
         console.log(data)
       })
     }
+  }
+
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
 }

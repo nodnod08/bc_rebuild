@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const parser = require('body-parser')
@@ -21,7 +22,6 @@ mongoose.connect(config.database ,
  {useNewUrlParser: true, useUnifiedTopology: true}, () => console.log('Database Connected!')
 );
 
-const port = 4001
-app.listen(port, () => {
-    console.log(`Running on port ${port} `)
+app.listen(process.env.PORT, () => {
+    console.log(`Running on port ${process.env.PORT} `)
 })

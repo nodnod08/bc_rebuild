@@ -31,9 +31,7 @@ router.post('/authenticate', (req, res) => {
         password: req.body.password
     }
     const query = { username: userCredentials.username }
-    // User.authenticate(userCredentials, (callback) => {
-    //     res.json(callback)
-    // })
+
     User.findOne(query, function(err, result) {
         if(result) {
             bcrypt.compare(userCredentials.password, result.password, function(err1, res1) {
@@ -66,6 +64,16 @@ router.post('/authenticate', (req, res) => {
 
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
         res.send(req.user);
+    }
+);
+
+router.post('/email', (req, res, next) => {
+        const query = { email: req.body.email }
+        User.findOne(query, function(err, result) {
+            res.send({
+                result: result
+            })
+        })
     }
 );
 

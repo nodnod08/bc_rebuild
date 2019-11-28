@@ -4,8 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FlashMessagesModule } from 'angular2-flash-messages';
-import { AuthService } from './services/auth/auth.service';
+import { MyAuthService } from './services/auth/myauth.service';
 import { HttpModule } from '@angular/http';
+import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from "angularx-social-login";
 
 
 import { AppComponent } from './app.component';
@@ -36,6 +37,17 @@ const appRoutes: Routes = [
   }
 ];
 
+let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("547432251334-c7qjf107o1bflg2if54j345uero5st98.apps.googleusercontent.com")
+  }
+]);
+
+export function provideConfig() {
+  return config;
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,11 +64,16 @@ const appRoutes: Routes = [
     FlashMessagesModule.forRoot(),
     FormsModule,
     HttpClientModule,
-    HttpModule
+    HttpModule,
+    SocialLoginModule
   ],
   providers: [
     ValidateService,
-    AuthService
+    MyAuthService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
+    }
   ],
   bootstrap: [AppComponent]
 })

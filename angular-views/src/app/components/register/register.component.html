@@ -1,1 +1,38 @@
-<p>register works!</p>
+<div class="row">
+    <div class="form col-lg-6">
+        <br>
+        <h4>Create an account</h4>
+        <br>
+        <flash-messages></flash-messages>
+        <br>
+        <form>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" (blur)="checkEmail($event)" [(ngModel)]="email" name="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input type="text" [(ngModel)]="username" name="username" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">First name</label>
+                <input type="text" [(ngModel)]="firstname" name="firstname" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Last name</label>
+                <input type="text" [(ngModel)]="lastname" name="lastname" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" [(ngModel)]="password" name="password" class="form-control form-control-sm" id="exampleInputPassword1">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Confirm Password</label>
+                <input type="password" [(ngModel)]="cpassword" name="cpassword" class="form-control form-control-sm" id="exampleInputPassword1">
+              </div>
+            <button type="button" (click)="registerForm()" class="btn btn-sm btn-primary">Submit</button>
+        </form>
+        <br>
+    </div>
+</div>
