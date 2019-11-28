@@ -53,7 +53,6 @@ export class RegisterComponent implements OnInit {
         this._flashMessagesService.show('Email is already exist', { cssClass: 'alert-danger', timeout: 100000 });
         this.email_already = true
       }
-      console.log(data.result)
     })
   }
 }
