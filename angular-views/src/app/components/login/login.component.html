@@ -3,7 +3,9 @@
         <br>
         <h4>Login your account</h4>
         <br>
-        <flash-messages></flash-messages>
+        <div *ngIf="require" class="alert alert-dismissible alert-danger">
+          <small>Please, complete all the fields</small>
+      </div>
         <br>
         <form>
             <div class="form-group">

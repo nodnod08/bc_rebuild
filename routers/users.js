@@ -13,14 +13,14 @@ router.post('/register', (req, res) => {
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
-        usertype: req.body.usertype
+        usertype: 'user'
     })
 
     User.addUser(newUser, (err, user) => {
         if(err) {
             res.json({success: false, message: 'Failed to register new user'})
         } else {
-            res.json(user)
+            res.json({success: true, message: 'Successfuly registered'})
         }
     })
 })
@@ -75,6 +75,16 @@ router.post('/email', (req, res, next) => {
             })
         })
     }
+);
+
+router.post('/username', (req, res, next) => {
+    const query = { username: req.body.username }
+    User.findOne(query, function(err, result) {
+        res.send({
+            result: result
+        })
+    })
+}
 );
 
 

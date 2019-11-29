@@ -18,4 +18,12 @@ export class MyAuthService {
     return this.http.post('http://localhost:4001/user/authenticate', user, {headers: header})
     .pipe(map((response: any) => response.json()));
   }
+
+  registerUser(user) {
+    let header = new Headers
+    header.append('Content-type', 'application/json')
+
+    return this.http.post('http://localhost:4001/user/register', user, {headers: header})
+    .pipe(map((response: any) => response.json()));
+  }
 }

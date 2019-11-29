@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
 
   email: String
   username: String
-  firtname: String
+  firstname: String
   lastname: String
   fullname: String
   password: String
@@ -26,33 +26,80 @@ export class RegisterComponent implements OnInit {
   provider: String
   email_already: Boolean
   username_already: Boolean
+  require: Boolean
+  pe: Boolean
+  success: Boolean
+  errors: Boolean
 
   ngOnInit() {
   }
 
-  registerForm() {
-    console.log(this.email)
-  }
-
-  checkEmail(event) {
+  checkEmail() {
     const email = {
       email: this.email
     }
-
-    // if(this.validateService.checkEmail(email)) {
-    //   console.log(this.validateService.checkEmail(email))
-    //   this._flashMessagesService.show('Email is already exist', { cssClass: 'alert-danger', timeout: 4000 });
-    //   this.email_already = true
-    // } else {
-    //   this.email_already = true
-    // }
     this.validateService.checkEmail(email).subscribe(data => {
       if(data.result == null || data.result == '' || data.result == 'null') {
         this.email_already = false
       } else {
-        this._flashMessagesService.show('Email is already exist', { cssClass: 'alert-danger', timeout: 100000 });
         this.email_already = true
       }
+      // console.log(data)
     })
+  }
+
+  checkUsername() {
+    const username = {
+      username: this.username
+    }
+    this.validateService.checkUsername(username).subscribe(data => {
+      if(data.result == null || data.result == '' || data.result == 'null') {
+        this.username_already = false
+      } else {
+        this.username_already = true
+      }
+      // console.log(data)
+    })
+  }
+
+  registerForm() {
+    const user = {
+      username: this.username,
+      email: this.email,
+      firstname: this.firstname,
+      lastname: this.lastname,
+      password: this.password,
+      cpassword: this.cpassword,
+    }
+    var result = this.validateService.validateRegister(user, this.pe, this.email_already, this.username_already )
+    if(result == 'required') {
+      this.require = true
+    } else if(result == 'errors') {
+      this.errors = true
+    } else {
+      this.errors = false
+      this.require = false
+      this.myAuthService.registerUser(user).subscribe(data => {
+        if(data.success) {
+          this.success = true
+          this.username = ''
+          this.email = ''
+          this.firstname = ''
+          this.lastname = ''
+          this.password = ''
+          this.cpassword = ''
+        } else {
+          this.success = false
+        }
+      })
+    }
+  }
+
+  checkPassword() {
+    if(this.password !== this.cpassword) {
+      this.pe = true
+    } else {
+      this.pe = false
+    }
   }
 }

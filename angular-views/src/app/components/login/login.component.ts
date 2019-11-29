@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   password:String
   private user: SocialUser;
   private loggedIn: boolean;
+  require: Boolean
 
   constructor(
     private validateService: ValidateService,
@@ -39,8 +40,9 @@ export class LoginComponent implements OnInit {
       password: this.password
     }
     if(this.validateService.validateLogin(user)) {
-      this._flashMessagesService.show('Please, complete all the fields', { cssClass: 'alert-danger', timeout: 4000 });
+      this.require = true
     } else {
+      this.require = false
       this.myAuthService.loginUser(user).subscribe(data => {
         console.log(data)
       })
