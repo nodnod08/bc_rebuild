@@ -27,11 +27,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = (user != null);
-      console.log(user)
-    });
+    
   }
 
   submitForm() {
@@ -44,7 +40,7 @@ export class LoginComponent implements OnInit {
     } else {
       this.require = false
       this.myAuthService.loginUser(user).subscribe(data => {
-        console.log(data)
+        localStorage.setItem('user_jwt', data.token)
       })
     }
   }

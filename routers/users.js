@@ -1,10 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const User = require('./../models/Users')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 const passport = require('passport')
-const database = require('./../config/database')
+const userController = require('./../controllers/user')
 
 router.post('/register', (req, res) => {
     const newUser = new User({
@@ -16,12 +14,13 @@ router.post('/register', (req, res) => {
         usertype: 'user'
     })
 
-    User.addUser(newUser, (err, user) => {
+    userController.addUser(newUser, (err, result) => {
         if(err) {
             res.json({success: false, message: 'Failed to register new user'})
         } else {
             res.json({success: true, message: 'Successfuly registered'})
         }
+        console.log(result)
     })
 })
 
@@ -32,32 +31,23 @@ router.post('/authenticate', (req, res) => {
     }
     const query = { username: userCredentials.username }
 
-    User.findOne(query, function(err, result) {
+    userController.authenticate(query, userCredentials, (err, result, token) => {
         if(result) {
-            bcrypt.compare(userCredentials.password, result.password, function(err1, res1) {
-                if(res1) {
-                    const token = jwt.sign(result.toJSON(), database.jwt_secret, {
-                        expiresIn: 604800
-                    })
-                    res.send({
-                        success: true,
-                        message: 'Successfuly logged in',
-                        token: 'Bearer '+token,
-                        user: {
-                            id: result._id,
-                            firstname: result.firstname,
-                            lastname: result.lastname,
-                            email: result.email,
-                            username: result.username,
-                            usertype: result.usertype
-                        }
-                    })
-                } else {
-                    res.send({success: false, message: 'Username or password inccorect inner'})
+            res.send({
+                success: true,
+                message: 'Successfuly logged in',
+                token: 'Bearer '+token,
+                user: {
+                    id: result._id,
+                    firstname: result.firstname,
+                    lastname: result.lastname,
+                    email: result.email,
+                    username: result.username,
+                    usertype: result.usertype
                 }
-            });
+            })
         } else {
-            res.send({success: false, message: 'Username or password incorrect outer'})
+            res.send({success: false, message: 'Username or password inccorect'})
         }
     })
 })
@@ -67,24 +57,22 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
     }
 );
 
-router.post('/email', (req, res, next) => {
+router.post('/email', (req, res) => {
         const query = { email: req.body.email }
-        User.findOne(query, function(err, result) {
-            res.send({
-                result: result
-            })
+
+        userController.checkEmail(query, (err, result) => {
+            res.send(result)
         })
     }
 );
 
 router.post('/username', (req, res, next) => {
-    const query = { username: req.body.username }
-    User.findOne(query, function(err, result) {
-        res.send({
-            result: result
+        const query = { username: req.body.username }
+
+        userController.checkUsername(query, (err, result) => {
+            res.send(result)
         })
-    })
-}
+    }
 );
 
 

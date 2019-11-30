@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { AuthService } from "angularx-social-login";
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+    ) {
+    this.router.events.forEach((event) => {
+      if(event instanceof NavigationStart) {
+        this.authService.authState.subscribe((user) => {
+          console.log(user)
+        });
+      }
+    });
+  }
 
   ngOnInit() {
   }

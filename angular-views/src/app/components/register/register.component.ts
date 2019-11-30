@@ -80,6 +80,7 @@ export class RegisterComponent implements OnInit {
       this.errors = false
       this.require = false
       this.myAuthService.registerUser(user).subscribe(data => {
+        console.log(data)
         if(data.success) {
           this.success = true
           this.username = ''

@@ -7,6 +7,10 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
 import { MyAuthService } from './services/auth/myauth.service';
 import { HttpModule } from '@angular/http';
 import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from "angularx-social-login";
+import { 
+  AuthRouteService
+} from './services/auth-route/auth-route.service';
+import { JwtModule } from "@auth0/angular-jwt";
 
 
 import { AppComponent } from './app.component';
@@ -33,9 +37,14 @@ const appRoutes: Routes = [
     component: AboutComponent
   },
   { path: 'shop',
-    component: ShopComponent
+    component: ShopComponent,
+    canActivate: [AuthRouteService] 
   }
 ];
+
+export function tokenGetter() {
+  return localStorage.getItem("user_jwt");
+}
 
 let config = new AuthServiceConfig([
   {
@@ -65,10 +74,18 @@ export function provideConfig() {
     FormsModule,
     HttpClientModule,
     HttpModule,
-    SocialLoginModule
+    SocialLoginModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ["localhost:4200"],
+        blacklistedRoutes: ["example.com/examplebadroute/"]
+      }
+    })
   ],
   providers: [
     ValidateService,
+    AuthRouteService,
     MyAuthService,
     {
       provide: AuthServiceConfig,
