@@ -11,6 +11,7 @@ import {
   AuthRouteService
 } from './services/auth-route/auth-route.service';
 import { JwtModule } from "@auth0/angular-jwt";
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 
 import { AppComponent } from './app.component';
@@ -81,7 +82,8 @@ export function provideConfig() {
         whitelistedDomains: ["localhost:4200"],
         blacklistedRoutes: ["example.com/examplebadroute/"]
       }
-    })
+    }),
+    AngularSvgIconModule 
   ],
   providers: [
     ValidateService,

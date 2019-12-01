@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   private user: SocialUser;
   private loggedIn: boolean;
   require: Boolean
+  loader: Boolean = false
 
   constructor(
     private validateService: ValidateService,
@@ -35,14 +36,18 @@ export class LoginComponent implements OnInit {
       username: this.username,
       password: this.password
     }
-    if(this.validateService.validateLogin(user)) {
-      this.require = true
-    } else {
-      this.require = false
-      this.myAuthService.loginUser(user).subscribe(data => {
-        localStorage.setItem('user_jwt', data.token)
-      })
-    }
+    this.loader = true
+    setTimeout(() => {
+      if(this.validateService.validateLogin(user)) {
+        this.require = true
+      } else {
+        this.require = false
+        this.myAuthService.loginUser(user).subscribe(async data => {
+          localStorage.setItem('user_jwt', data.token)
+        })
+      }
+      this.loader = false
+    }, 1500);
   }
 
   signInWithGoogle(): void {
