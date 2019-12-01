@@ -30,6 +30,7 @@ export class RegisterComponent implements OnInit {
   pe: Boolean
   success: Boolean
   errors: Boolean
+  loader: Boolean = false
 
   ngOnInit() {
   }
@@ -71,29 +72,33 @@ export class RegisterComponent implements OnInit {
       password: this.password,
       cpassword: this.cpassword,
     }
+    this.loader = true
     var result = this.validateService.validateRegister(user, this.pe, this.email_already, this.username_already )
-    if(result == 'required') {
-      this.require = true
-    } else if(result == 'errors') {
-      this.errors = true
-    } else {
-      this.errors = false
-      this.require = false
-      this.myAuthService.registerUser(user).subscribe(data => {
-        console.log(data)
-        if(data.success) {
-          this.success = true
-          this.username = ''
-          this.email = ''
-          this.firstname = ''
-          this.lastname = ''
-          this.password = ''
-          this.cpassword = ''
-        } else {
-          this.success = false
-        }
-      })
-    }
+    setTimeout(() => {
+      if(result == 'required') {
+        this.require = true
+      } else if(result == 'errors') {
+        this.errors = true
+      } else {
+        this.errors = false
+        this.require = false
+        this.myAuthService.registerUser(user).subscribe(data => {
+          console.log(data)
+          if(data.success) {
+            this.success = true
+            this.username = ''
+            this.email = ''
+            this.firstname = ''
+            this.lastname = ''
+            this.password = ''
+            this.cpassword = ''
+          } else {
+            this.success = false
+          }
+        })
+      }
+      this.loader = false
+    }, 1500);
   }
 
   checkPassword() {

@@ -42,6 +42,9 @@
                 <input type="password" (blur)="checkPassword($event)" [(ngModel)]="cpassword" name="cpassword" class="form-control form-control-sm" id="exampleInputPassword1">
               </div>
             <button type="button" (click)="registerForm()" class="btn btn-sm btn-primary">Submit</button>
+            <span *ngIf="loader" class="loader">
+                <svg-icon src="./assets/svgs/2.svg" [svgStyle]="{ 'width.px':30, 'height.px':30 }"></svg-icon>
+              </span>
         </form>
         <br>
     </div>
