@@ -33,6 +33,9 @@ export class RegisterComponent implements OnInit {
   loader: Boolean = false
 
   ngOnInit() {
+    this.myAuthService.getUserLoggedIn().subscribe(data => {
+      console.log(data.result)
+    })
   }
 
   checkEmail() {

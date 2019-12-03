@@ -2,6 +2,7 @@ const User = require('./../models/Users')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const database = require('./../config/database')
+const _ = require('lodash')
 
 module.exports.addUser = function(newUser, callback) {
     bcrypt.genSalt(10, function(err, salt) {
@@ -16,34 +17,22 @@ module.exports.addUser = function(newUser, callback) {
 }
 
 module.exports.authenticate = function(query, userCredentials, callback) {
-    User.findOne(query, function(err, result) {
+    User.findOne(query, async function(err, result) {
         if(result) {
             bcrypt.compare(userCredentials.password, result.password, function(err1, res1) {
                 if(res1) {
-                    const token = jwt.sign(result.toJSON(), database.jwt_secret, {
+                    const result_final = result.toJSON()
+                    delete result_final.password
+
+                    const token = jwt.sign(result_final, database.jwt_secret, {
                         expiresIn: 604800
                     })
-                    // res.send({
-                    //     success: true,
-                    //     message: 'Successfuly logged in',
-                    //     token: 'Bearer '+token,
-                    //     user: {
-                    //         id: result._id,
-                    //         firstname: result.firstname,
-                    //         lastname: result.lastname,
-                    //         email: result.email,
-                    //         username: result.username,
-                    //         usertype: result.usertype
-                    //     }
-                    // })
                     callback(null, result, token)
                 } else {
-                    // res.send({success: false, message: 'Username or password inccorect'})
                     callback(null, null, null)
                 }
             });
         } else {
-            // res.send({success: false, message: 'Username or password incorrect'})
             callback(null, null, null)
         }
     })
@@ -62,6 +51,20 @@ module.exports.checkUsername = function(query, callback) {
     User.findOne(query, function(err, result) {
         const queryResult = {
             result: result
+        }
+        callback(null, queryResult)
+    })
+}
+
+module.exports.getDecodeUser = async function(token, callback) {
+    var decoded = await jwt.decode(token.token.substring(7), database.jwt_secret);
+
+    User.findOne({_id: decoded._id}, function(err, result) {
+        const result_final = result.toJSON()
+        delete result_final.password
+        
+        const queryResult = {
+            result: result_final
         }
         callback(null, queryResult)
     })

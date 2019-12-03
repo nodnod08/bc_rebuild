@@ -35,4 +35,15 @@ export class MyAuthService {
     // true or false
     return !this.jwtHelper.isTokenExpired(token);
   }
+
+  public getUserLoggedIn(): any {
+    const token = {
+      token: localStorage.getItem('user_jwt')
+    }
+    let header = new Headers
+    header.append('Content-type', 'application/json')
+
+    return this.http.post('http://localhost:4001/user/getUser', token, {headers: header})
+    .pipe(map((response: any) => response.json()));
+  }
 }

@@ -39,7 +39,7 @@ const appRoutes: Routes = [
   },
   { path: 'shop',
     component: ShopComponent,
-    canActivate: [AuthRouteService] 
+    canActivate: [AuthRouteService]
   }
 ];
 

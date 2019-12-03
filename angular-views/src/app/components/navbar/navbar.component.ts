@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
     this.router.events.forEach((event) => {
       if(event instanceof NavigationStart) {
         this.authService.authState.subscribe((user) => {
-          console.log(user)
+          // console.log(user)
         });
       }
     });
