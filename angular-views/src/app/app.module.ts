@@ -10,6 +10,10 @@ import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from "angul
 import { 
   AuthRouteService
 } from './services/auth-route/auth-route.service';
+
+import { 
+  AuthDeactivateService
+} from './services/auth-route-deactivate/auth-deactivate.service';
 import { JwtModule } from "@auth0/angular-jwt";
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -29,10 +33,12 @@ const appRoutes: Routes = [
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate: [AuthDeactivateService]
   },
   { path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [AuthDeactivateService]
   },
   { path: 'about',
     component: AboutComponent
@@ -92,7 +98,8 @@ export function provideConfig() {
     {
       provide: AuthServiceConfig,
       useFactory: provideConfig
-    }
+    },
+    AuthDeactivateService
   ],
   bootstrap: [AppComponent]
 })
