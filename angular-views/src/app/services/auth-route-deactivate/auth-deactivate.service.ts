@@ -13,15 +13,17 @@ export class AuthDeactivateService implements CanActivate{
   ) { }
 
   async canActivate(): Promise<boolean> {
+
     if (this.auth.isAuthenticated()) {
       this.router.navigate(['/']);
       return false;
     }
+
     if(this.auth.getUserLoggedIn()) {
       this.router.navigate(['/']);
       return false
     }
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
     return true;
     
   }

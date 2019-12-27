@@ -79,6 +79,7 @@ router.post('/getUser', (req, res, next) => {
     const token = { token: req.body.token }
 
     userController.getDecodeUser(token, (err, result) => {
+        console.log(result)
         res.send(result)
     })
 }

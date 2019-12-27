@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class MyAuthService {
 
   result:any
+  data: any;
 
   constructor(
     private http: Http,
@@ -39,23 +40,24 @@ export class MyAuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  public async getUserLoggedIn(): Promise<any> {
-    const token = {
-      token: localStorage.getItem('user_jwt')
-    }
-    let header = new Headers
-    header.append('Content-type', 'application/json')
+  public async getUserLoggedIn(): Promise<Boolean>{
+    var token_jwt = localStorage.getItem('user_jwt')
 
-    await this.http.post('http://localhost:4001/user/getUser', token, {headers: header})
-    .pipe(map(async (response: any) => {
-      this.result = await response.json()
-
-      console.log(this.result)
-      if(this.result.result) {
-        return true
-      } else {
-        return false
+    if(token_jwt == null) {
+      return false
+    } else {
+      const token = {
+        token: token_jwt
       }
-    }));
+      let header = new Headers
+      header.append('Content-type', 'application/json')
+
+      await this.http.post('http://localhost:4001/user/getUser', token, {headers: header})
+      .pipe(map(async (response: any) => {
+        this.data.push(response.json())
+      }));
+
+      return (this.data.length) ? true : false
+    }
   }
 }
