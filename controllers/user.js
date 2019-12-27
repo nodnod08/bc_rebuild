@@ -66,8 +66,6 @@ module.exports.getDecodeUser = async function(token, callback) {
         const queryResult = {
             result: result_final
         }
-        
-        console.log(queryResult)
         callback(null, queryResult)
     })
 }
