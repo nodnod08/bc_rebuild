@@ -5,7 +5,7 @@ import { MyAuthService } from './../auth/myauth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthRouteService implements CanActivate{
+export class AuthDeactivateService implements CanActivate{
 
   constructor(
     public auth: MyAuthService,
@@ -13,15 +13,16 @@ export class AuthRouteService implements CanActivate{
   ) { }
 
   async canActivate(): Promise<boolean> {
-    if (!this.auth.isAuthenticated()) {
-      this.router.navigate(['login']);
+    if (this.auth.isAuthenticated()) {
+      this.router.navigate(['/']);
       return false;
     }
     if(this.auth.getUserLoggedIn()) {
-      return true
+      this.router.navigate(['/']);
+      return false
     }
-    this.router.navigate(['login']);
-    return false;
+    this.router.navigate(['/']);
+    return true;
     
   }
 

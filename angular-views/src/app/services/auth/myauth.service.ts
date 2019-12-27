@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyAuthService {
+
+  result:any
 
   constructor(
     private http: Http,
@@ -36,14 +39,23 @@ export class MyAuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  public getUserLoggedIn(): any {
+  public async getUserLoggedIn(): Promise<any> {
     const token = {
       token: localStorage.getItem('user_jwt')
     }
     let header = new Headers
     header.append('Content-type', 'application/json')
 
-    return this.http.post('http://localhost:4001/user/getUser', token, {headers: header})
-    .pipe(map((response: any) => response.json()));
+    await this.http.post('http://localhost:4001/user/getUser', token, {headers: header})
+    .pipe(map(async (response: any) => {
+      this.result = await response.json()
+
+      console.log(this.result)
+      if(this.result.result) {
+        return true
+      } else {
+        return false
+      }
+    }));
   }
 }
