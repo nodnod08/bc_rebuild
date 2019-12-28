@@ -20,7 +20,7 @@ export class AuthDeactivateService implements CanActivate{
     }
 
     if(this.auth.getUserLoggedIn()) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/shop']);
       return false
     }
     // this.router.navigate(['/']);

@@ -37,12 +37,14 @@ export class MyAuthService {
     const token = localStorage.getItem('user_jwt');
     // Check whether the token is expired and return
     // true or false
+    if(token == null) {
+      return false
+    }
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  public async getUserLoggedIn(): Promise<Boolean>{
-    var token_jwt = localStorage.getItem('user_jwt')
-
+  public getUserLoggedIn(): boolean{
+    var token_jwt = localStorage.getItem('user_jwt') 
     if(token_jwt == null) {
       return false
     } else {
@@ -52,7 +54,7 @@ export class MyAuthService {
       let header = new Headers
       header.append('Content-type', 'application/json')
 
-      await this.http.post('http://localhost:4001/user/getUser', token, {headers: header})
+      this.http.post('http://localhost:4001/user/getUser', token, {headers: header})
       .pipe(map(async (response: any) => {
         this.data.push(response.json())
       }));

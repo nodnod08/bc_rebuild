@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
         this.require = false
         this.myAuthService.loginUser(user).subscribe(async data => {
           localStorage.setItem('user_jwt', data.token)
+          localStorage.setItem('user_username', data.user.username)
         })
       }
       this.loader = false
