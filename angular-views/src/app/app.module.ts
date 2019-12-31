@@ -10,12 +10,12 @@ import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from "angul
 import { 
   AuthRouteService
 } from './services/auth-route/auth-route.service';
-
 import { 
   AuthDeactivateService
 } from './services/auth-route-deactivate/auth-deactivate.service';
 import { JwtModule } from "@auth0/angular-jwt";
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 import { AppComponent } from './app.component';
@@ -88,7 +88,8 @@ export function provideConfig() {
         blacklistedRoutes: ["example.com/examplebadroute/"]
       }
     }),
-    AngularSvgIconModule 
+    AngularSvgIconModule,
+    FontAwesomeModule 
   ],
   providers: [
     ValidateService,

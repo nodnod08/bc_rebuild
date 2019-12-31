@@ -43,8 +43,11 @@ export class LoginComponent implements OnInit {
       } else {
         this.require = false
         this.myAuthService.loginUser(user).subscribe(async data => {
-          localStorage.setItem('user_jwt', data.token)
-          localStorage.setItem('user_username', data.user.username)
+          if(typeof data.token != 'undefined') {
+            localStorage.setItem('user_jwt', data.token)
+            localStorage.setItem('user_username', data.user.username)
+            window.location.pathname = '/'
+          }
         })
       }
       this.loader = false
