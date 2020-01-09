@@ -25,16 +25,21 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     private MyAuthService: MyAuthService
     ) {
-    this.router.events.forEach((event) => {
-      if(event instanceof NavigationStart) {
-        this.authService.authState.subscribe((user) => {
-          console.log(user)
-        });
-      }
+    // this.router.events.forEach((event) => {
+    //   if(event instanceof NavigationStart) {
+    //     this.authService.authState.subscribe((user) => {
+    //       console.log(user)
+    //     });
+    //   }
+    // });
+
+    router.events.subscribe((val) => {
+        this.MyAuthService.userCheck()
     });
   }
 
   ngOnInit() {
+    this.MyAuthService.userCheck()
     this.userInitiate()
   }
   logOut() {

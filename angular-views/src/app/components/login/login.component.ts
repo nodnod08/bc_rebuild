@@ -41,26 +41,23 @@ export class LoginComponent implements OnInit {
       password: this.password
     }
     this.loader = true
-    setTimeout(() => {
-      if(this.validateService.validateLogin(user)) {
-        this.require = true
-      } else {
-        this.require = false
-        this.myAuthService.loginUser(user).subscribe(data => {
-          console.log('created')
-          if(typeof data.token != 'undefined') {
-            localStorage.setItem('user_jwt', data.token)
-            localStorage.setItem('user_details', JSON.stringify(data.user))
-            this.myAuthService.userCheck()
-            this.router.navigate(['/'])
-            this.unauthenticate = false
-          } else {
-            this.unauthenticate = true
-          }
-        })
-      }
-      this.loader = false
-    }, 1500)
+    if(this.validateService.validateLogin(user)) {
+      this.require = true
+    } else {
+      this.require = false
+      this.myAuthService.loginUser(user).subscribe(data => {
+        if(typeof data.token != 'undefined') {
+          localStorage.setItem('user_jwt', data.token)
+          localStorage.setItem('user_details', JSON.stringify(data.user))
+          this.myAuthService.userCheck()
+          this.router.navigate(['/'])
+          this.unauthenticate = false
+        } else {
+          this.unauthenticate = true
+        }
+      })
+    }
+    this.loader = false
   }
 
   signInWithGoogle(): void {
