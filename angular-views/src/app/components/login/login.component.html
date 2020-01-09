@@ -3,8 +3,9 @@
         <br>
         <h4>Login your account</h4>
         <br>
-        <div *ngIf="require" class="alert alert-dismissible alert-danger">
-          <small>Please, complete all the fields</small>
+        <div *ngIf="require || unauthenticate" class="alert alert-dismissible alert-danger">
+          <small [style.display]="require ? 'block' : 'none'">Please, complete all the fields</small>
+          <small [style.display]="unauthenticate ? 'block' : 'none'">Username or password incorrect</small>
         </div>
         <br>
         <form>
