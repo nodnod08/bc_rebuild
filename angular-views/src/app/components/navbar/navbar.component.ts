@@ -13,12 +13,13 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  isLoggedIn: any;
+  isLoggedIn: boolean = false;
   username: string;
   faCoffee = faUserCircle;
   faCogs = faCogs;
   faReceipt = faReceipt;
   faSignOutAlt = faSignOutAlt;
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -34,13 +35,21 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLoggedIn = this.MyAuthService.isAuthenticated()
-    this.username = localStorage.getItem('user_username') 
+    this.userInitiate()
   }
-
   logOut() {
     localStorage.removeItem("user_jwt");
-    localStorage.removeItem("user_username");
-    window.location.pathname = '/'
+    localStorage.removeItem("user_details");
+    this.MyAuthService.logout()
+    this.router.navigate(['/'])
+    
+  }
+
+  userInitiate() {
+    this.MyAuthService.user_detail.subscribe(data => {
+      this.username = data;
+      (data != null) ? this.isLoggedIn = true : this.isLoggedIn = false
+      console.log(data)
+    })
   }
 }

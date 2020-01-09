@@ -92,6 +92,7 @@ export function provideConfig() {
     FontAwesomeModule 
   ],
   providers: [
+    LoginComponent,
     ValidateService,
     AuthRouteService,
     MyAuthService,

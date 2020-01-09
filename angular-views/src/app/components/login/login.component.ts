@@ -5,6 +5,8 @@ import { MyAuthService } from '../../services/auth/myauth.service';
 import { AuthService } from "angularx-social-login";
 import { GoogleLoginProvider } from "angularx-social-login";
 import { SocialUser } from "angularx-social-login";
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
   selector: 'app-login',
@@ -20,11 +22,13 @@ export class LoginComponent implements OnInit {
   require: Boolean
   loader: Boolean = false
 
+
   constructor(
     private validateService: ValidateService,
     private _flashMessagesService: FlashMessagesService,
     private myAuthService: MyAuthService,
-    private authService: AuthService
+    private authService: AuthService,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -37,21 +41,20 @@ export class LoginComponent implements OnInit {
       password: this.password
     }
     this.loader = true
-    setTimeout(() => {
-      if(this.validateService.validateLogin(user)) {
-        this.require = true
-      } else {
-        this.require = false
-        this.myAuthService.loginUser(user).subscribe(async data => {
-          if(typeof data.token != 'undefined') {
-            localStorage.setItem('user_jwt', data.token)
-            localStorage.setItem('user_username', data.user.username)
-            window.location.pathname = '/'
-          }
-        })
-      }
-      this.loader = false
-    }, 1500);
+    if(this.validateService.validateLogin(user)) {
+      this.require = true
+    } else {
+      this.require = false
+      this.myAuthService.loginUser(user).subscribe(async data => {
+        if(typeof data.token != 'undefined') {
+          localStorage.setItem('user_jwt', data.token)
+          localStorage.setItem('user_details', JSON.stringify(data.user))
+          this.myAuthService.userCheck()
+          this.router.navigate(['/'])
+        }
+      })
+    }
+    this.loader = false
   }
 
   signInWithGoogle(): void {

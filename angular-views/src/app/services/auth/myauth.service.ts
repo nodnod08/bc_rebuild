@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,9 @@ export class MyAuthService {
 
   result:any
   data: any;
+
+  private dataSource = new BehaviorSubject<any>(null);
+  user_detail = this.dataSource.asObservable();
 
   constructor(
     private http: Http,
@@ -61,5 +65,13 @@ export class MyAuthService {
 
       return (this.data.length) ? true : false
     }
+  }
+
+  userCheck() {
+    this.dataSource.next(JSON.parse(localStorage.getItem('user_details')));
+  }
+
+  logout() {
+    this.dataSource.next(null);
   }
 }
