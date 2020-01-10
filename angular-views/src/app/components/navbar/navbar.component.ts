@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { AuthService } from "angularx-social-login";
 import { MyAuthService } from "../../services/auth/myauth.service";
@@ -6,20 +6,21 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { faCogs } from '@fortawesome/free-solid-svg-icons';
 import { faReceipt } from '@fortawesome/free-solid-svg-icons';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy  {
   isLoggedIn: boolean = false;
   username: string;
   faCoffee = faUserCircle;
   faCogs = faCogs;
   faReceipt = faReceipt;
   faSignOutAlt = faSignOutAlt;
-
+  private _routerSub = Subscription.EMPTY;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -32,15 +33,19 @@ export class NavbarComponent implements OnInit {
     //     });
     //   }
     // });
-
-    router.events.subscribe((val) => {
-        this.MyAuthService.userCheck()
-    });
   }
 
   ngOnInit() {
-    this.MyAuthService.userCheck()
     this.userInitiate()
+    this._routerSub = this.router.events.subscribe((value) => {
+      if (value instanceof NavigationEnd) {
+        this.MyAuthService.userCheck()
+      }
+    });
+  }
+
+  ngOnDestroy(){
+    this._routerSub.unsubscribe();
   }
   logOut() {
     localStorage.removeItem("user_jwt");
@@ -54,7 +59,7 @@ export class NavbarComponent implements OnInit {
     this.MyAuthService.user_detail.subscribe(data => {
       this.username = data;
       (data != null) ? this.isLoggedIn = true : this.isLoggedIn = false
-      console.log(data)
+      // console.log(data)
     })
   }
 }
