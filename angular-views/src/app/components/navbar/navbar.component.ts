@@ -52,7 +52,6 @@ export class NavbarComponent implements OnInit, OnDestroy  {
     localStorage.removeItem("user_details");
     this.MyAuthService.logout()
     this.router.navigate(['/'])
-    
   }
 
   userInitiate() {
