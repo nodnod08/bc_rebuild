@@ -44,6 +44,16 @@ export class LoginComponent implements OnInit {
     if(this.validateService.validateLogin(user)) {
       this.require = true
     } else {
+      this.authenticate(user).then(() => this.loader = false)
+    }
+  }
+
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  authenticate(user): Promise<any> {
+    return new Promise((resolve, reject) => {
       this.require = false
       this.myAuthService.loginUser(user).subscribe(data => {
         if(typeof data.token != 'undefined') {
@@ -52,16 +62,13 @@ export class LoginComponent implements OnInit {
           this.myAuthService.userCheck()
           this.router.navigate(['/'])
           this.unauthenticate = false
+          resolve()
         } else {
           this.unauthenticate = true
+          resolve()
         }
       })
-    }
-    this.loader = false
-  }
-
-  signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    })
   }
 
 }
