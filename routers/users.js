@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
+const jwt = require('jsonwebtoken')
 const User = require('./../models/Users')
 const passport = require('passport')
 const userController = require('./../controllers/user')
+const database = require('./../config/database')
 
 router.post('/register', (req, res) => {
     const newUser = new User({
@@ -11,7 +13,8 @@ router.post('/register', (req, res) => {
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
-        usertype: 'user'
+        usertype: 'user',
+        processFrom: 'default'
     })
 
     userController.addUser(newUser, (err, result) => {
@@ -19,6 +22,37 @@ router.post('/register', (req, res) => {
             res.json({success: false, message: 'Failed to register new user'})
         } else {
             res.json({success: true, message: 'Successfuly registered'})
+        }
+        console.log(result)
+    })
+})
+
+router.post('/checkUserFromSocial', (req, res) => {
+
+    userController.checkSubId(req.body.id, (err, result) => {
+        const newUser = new User({
+            firstname: req.body.firstName,
+            lastname: req.body.lastName,
+            email: req.body.email,
+            username: req.body.firstName,
+            usertype: 'user',
+            processFrom: 'social'
+        })
+        const token = jwt.sign(newUser.toJSON(), database.jwt_secret, {
+            expiresIn: 604800
+        })
+
+        if(result){
+            res.json({success: true, message: 'Already registered', token: 'Bearer '+token, user: newUser})
+        } else {
+            userController.addUser(newUser, (err, result) => {
+                if(err) {
+                    res.json({success: false, message: 'Failed to register new user'})
+                } else {
+                    res.json({success: true, message: 'Successfuly registered', token: 'Bearer '+token, user: newUser})
+                }
+                console.log(result)
+            })
         }
         console.log(result)
     })

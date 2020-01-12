@@ -26,13 +26,13 @@ export class NavbarComponent implements OnInit, OnDestroy  {
     private authService: AuthService,
     private MyAuthService: MyAuthService
     ) {
-    // this.router.events.forEach((event) => {
-    //   if(event instanceof NavigationStart) {
-    //     this.authService.authState.subscribe((user) => {
-    //       console.log(user)
-    //     });
-    //   }
-    // });
+      // this.router.events.subscribe((event) => {
+      //   if(event instanceof NavigationStart) {
+      //     this.authService.authState.subscribe((user) => {
+      //       console.log(user)
+      //     });
+      //   }
+      // });
   }
 
   ngOnInit() {

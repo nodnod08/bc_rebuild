@@ -5,15 +5,19 @@ const database = require('./../config/database')
 const _ = require('lodash')
 
 module.exports.addUser = function(newUser, callback) {
-    bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(newUser.password, salt, function(err, hash) {
-            if(err) {
-                callback(err, null)
-            }
-            newUser.password = hash
-            newUser.save(null, callback)
+    if(newUser.processFrom == 'default') {
+        bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(newUser.password, salt, function(err, hash) {
+                if(err) {
+                    callback(err, null)
+                }
+                newUser.password = hash
+                newUser.save(null, callback)
+            });
         });
-    });
+    } else {
+        newUser.save(null, callback)
+    }
 }
 
 module.exports.authenticate = function(query, userCredentials, callback) {
@@ -44,6 +48,12 @@ module.exports.checkEmail = function(query, callback) {
             result: result
         }
         callback(null, queryResult)
+    })
+}
+
+module.exports.checkSubId = function(id, callback) {
+    User.findOne({subId: id}, function(err, result) {
+        callback(null, result)
     })
 }
 

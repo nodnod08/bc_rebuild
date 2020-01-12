@@ -50,6 +50,19 @@ export class LoginComponent implements OnInit {
 
   signInWithGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.authService.authState.subscribe((user) => {
+      if(user != null) {
+        this.myAuthService.checkUserFromSocial(user).subscribe(response => {
+          if(response.success) {
+            localStorage.setItem('user_jwt', response.token)
+            localStorage.setItem('user_details', JSON.stringify(response.user))
+            this.myAuthService.userCheck()
+            this.router.navigate(['/'])
+          }
+          console.log(response)
+        }) 
+      }
+    }).unsubscribe();
   }
 
   authenticate(user): Promise<any> {
