@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
             this.myAuthService.userCheck()
             this.router.navigate(['/'])
           }
-          console.log(response)
+          // console.log(response)
         }) 
       }
     }).unsubscribe();

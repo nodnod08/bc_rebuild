@@ -31,7 +31,7 @@
       </ul>
       <ul *ngIf="isLoggedIn" class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false"><fa-icon [icon]="faCoffee" [styles]="{'stroke': 'white', 'color': '#08fcd8'}"></fa-icon> {{ username.username }} <span class="caret"></span></a>
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false"><fa-icon [icon]="faCoffee"></fa-icon> {{ username.username }} <span class="caret"></span></a>
           <div class="dropdown-menu" aria-labelledby="themes">
             <a class="dropdown-item" href="../default/"><fa-icon [icon]="faReceipt" ></fa-icon> My transactions</a>
             <a class="dropdown-item" href="../default/"><fa-icon [icon]="faCogs" ></fa-icon> Settings</a>

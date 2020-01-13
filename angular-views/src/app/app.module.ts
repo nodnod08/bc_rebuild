@@ -26,7 +26,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { IndexComponent } from './components/index/index.component';
 import { ShopComponent } from './components/shop/shop.component';
 import { AboutComponent } from './components/about/about.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FooterComponent } from './components/footer/footer.component';
 const appRoutes: Routes = [
   { path: '', 
     component: IndexComponent 
@@ -71,9 +73,11 @@ export function provideConfig() {
     RegisterComponent,
     IndexComponent,
     ShopComponent,
-    AboutComponent
+    AboutComponent,
+    FooterComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule.forRoot(),
@@ -89,7 +93,8 @@ export function provideConfig() {
       }
     }),
     AngularSvgIconModule,
-    FontAwesomeModule 
+    FontAwesomeModule,
+    NgbModule 
   ],
   providers: [
     LoginComponent,
