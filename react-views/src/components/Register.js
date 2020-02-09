@@ -52,12 +52,18 @@ class Register extends React.Component {
                 email: this.state.email,
                 password: this.state.password
             }).then(response => {
-                // console.log(response)
                 this.setState({
-                    loading: false
+                    loading: false,
+                    username: '',
+                    email: '',
+                    password: '',
+                    confirmPassword: '',
                 })
                 this.setState({
                     success: (response.data.success) ? true : false
+                })
+                this.setState({
+                    success: ''
                 })
             })
         } else {
