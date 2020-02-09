@@ -8,8 +8,6 @@ const database = require('./../config/database')
 
 router.post('/register', (req, res) => {
     const newUser = new User({
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,

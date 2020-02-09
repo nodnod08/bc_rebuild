@@ -1,24 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Fragment } from 'react';
 import './App.css';
+import Header from './components/Header';
+import Index from './components/Index';
+import Trends from './components/Trends';
+import Forums from './components/Forums';
+import Teams from './components/Teams';
+import Signin from './components/Signin';
+import Register from './components/Register';
+
+import {
+  BrowserRouter as Router, Switch, Route
+} from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Header/>
+        <Switch>
+          <Fragment>
+            <div className="container mt-5">
+              <Route exact path="/">
+                <Index />
+              </Route>
+              <Route path="/trendings">
+                <Trends />
+              </Route>
+              <Route path="/forums">
+                <Forums />
+              </Route>
+              <Route path="/teams">
+                <Teams />
+              </Route>
+              <Route path="/register">
+                <Register />
+              </Route>
+              <Route path="/signin">
+                <Signin />
+              </Route>
+            </div>
+          </Fragment>
+        </Switch>
+      </Router>
     </div>
   );
 }

@@ -1,0 +1,15 @@
+.submit {
+    border-radius: 0;
+    background: #404040;
+    color: #fff;
+    width: 100%;
+}
+
+small.error {
+    color: red;
+}
+
+.loader {
+    margin-left: 50%;
+    transform: translateX(-51%);
+}

@@ -1,0 +1,12 @@
+form.signin {
+    border: 1px solid #404040;
+    padding: 4%;
+    border-radius: 5%;
+}
+
+.submit {
+    border-radius: 0;
+    background: #404040;
+    color: #fff;
+    width: 100%;
+}
