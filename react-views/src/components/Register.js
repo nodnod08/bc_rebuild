@@ -62,9 +62,6 @@ class Register extends React.Component {
                 this.setState({
                     success: (response.data.success) ? true : false
                 })
-                this.setState({
-                    success: ''
-                })
             })
         } else {
             this.validator.showMessages();
@@ -104,7 +101,7 @@ class Register extends React.Component {
                         </div>
                         <div className="form-group">
                             {this.state.loading && <img className="loader" alt="loader" width="50px" height="50px" src={require('./../assets/loader.svg')} />}
-                            {(this.state.success && this.state.success != '') && 
+                            {(this.state.success && this.state.success !== '') && 
                                 <div className="alert alert-dismissible alert-success">
                                     <button type="button" className="close" data-dismiss="alert">&times;</button>
                                     Successfuly registered you can login now.

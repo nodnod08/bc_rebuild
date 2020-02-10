@@ -12,36 +12,42 @@ import {
   BrowserRouter as Router, Switch, Route
 } from "react-router-dom";
 
+import { Provider } from 'react-redux'
+import store from './store'
+
 function App() {
+
   return (
     <div className="App">
-      <Router>
-        <Header/>
-        <Switch>
-          <Fragment>
-            <div className="container mt-5">
-              <Route exact path="/">
-                <Index />
-              </Route>
-              <Route path="/trendings">
-                <Trends />
-              </Route>
-              <Route path="/forums">
-                <Forums />
-              </Route>
-              <Route path="/teams">
-                <Teams />
-              </Route>
-              <Route path="/register">
-                <Register />
-              </Route>
-              <Route path="/signin">
-                <Signin />
-              </Route>
-            </div>
-          </Fragment>
-        </Switch>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Header/>
+          <Switch>
+            <Fragment>
+              <div className="container mt-5">
+                <Route exact path="/">
+                  <Index />
+                </Route>
+                <Route path="/trendings">
+                  <Trends />
+                </Route>
+                <Route path="/forums">
+                  <Forums />
+                </Route>
+                <Route path="/teams">
+                  <Teams />
+                </Route>
+                <Route path="/register">
+                  <Register />
+                </Route>
+                <Route path="/signin">
+                  <Signin />
+                </Route>
+              </div>
+            </Fragment>
+          </Switch>
+        </Router>
+      </Provider>
     </div>
   );
 }
