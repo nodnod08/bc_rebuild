@@ -1,15 +1,28 @@
 const initialState = {
   isLoggedIn: false,
-  user: {}
+  user: {},
+  token: {}
 }
 
-export default function counter(state = initialState, action) {
+export default function(state = initialState, action) {
     switch (action.type) {
       case 'LOGIN':
-        // return state + 1
+        return({
+          ...state,
+          user: action.payload.user,
+          token: action.payload.token,
+          isLoggedIn: true
+        })
       case 'LOGOUT':
-        // return state - 1
+        return ({
+          ...state,
+          user: {},
+          isLoggedIn: false,
+          data: {}
+        })
       default:
-        // return state
+        return ({
+          ...state
+        })
     }
-  }
+}

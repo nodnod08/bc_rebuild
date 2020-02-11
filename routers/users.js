@@ -6,7 +6,7 @@ const passport = require('passport')
 const userController = require('./../controllers/user')
 const database = require('./../config/database')
 
-router.post('/register', (req, res) => {
+router.post('/register',  (req, res) => {
     const newUser = new User({
         email: req.body.email,
         username: req.body.username,
@@ -21,40 +21,39 @@ router.post('/register', (req, res) => {
         } else {
             res.json({success: true, message: 'Successfuly registered'})
         }
-        console.log(result)
     })
 })
 
-router.post('/checkUserFromSocial', (req, res) => {
+// router.post('/checkUserFromSocial', (req, res) => {
 
-    userController.checkSubId(req.body.id, (err, result) => {
-        const newUser = new User({
-            firstname: req.body.firstName,
-            lastname: req.body.lastName,
-            email: req.body.email,
-            username: req.body.firstName,
-            usertype: 'user',
-            processFrom: 'social'
-        })
-        const token = jwt.sign(newUser.toJSON(), database.jwt_secret, {
-            expiresIn: 604800
-        })
+//     userController.checkSubId(req.body.id, (err, result) => {
+//         const newUser = new User({
+//             firstname: req.body.firstName,
+//             lastname: req.body.lastName,
+//             email: req.body.email,
+//             username: req.body.firstName,
+//             usertype: 'user',
+//             processFrom: 'social'
+//         })
+//         const token = jwt.sign(newUser.toJSON(), database.jwt_secret, {
+//             expiresIn: 604800
+//         })
 
-        if(result){
-            res.json({success: true, message: 'Already registered', token: 'Bearer '+token, user: newUser})
-        } else {
-            userController.addUser(newUser, (err, result) => {
-                if(err) {
-                    res.json({success: false, message: 'Failed to register new user'})
-                } else {
-                    res.json({success: true, message: 'Successfuly registered', token: 'Bearer '+token, user: newUser})
-                }
-                console.log(result)
-            })
-        }
-        console.log(result)
-    })
-})
+//         if(result){
+//             res.json({success: true, message: 'Already registered', token: 'Bearer '+token, user: newUser})
+//         } else {
+//             userController.addUser(newUser, (err, result) => {
+//                 if(err) {
+//                     res.json({success: false, message: 'Failed to register new user'})
+//                 } else {
+//                     res.json({success: true, message: 'Successfuly registered', token: 'Bearer '+token, user: newUser})
+//                 }
+//                 console.log(result)
+//             })
+//         }
+//         console.log(result)
+//     })
+// })
 
 router.post('/authenticate', (req, res) => {
     const userCredentials = {
