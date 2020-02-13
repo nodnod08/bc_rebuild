@@ -78,7 +78,7 @@ router.post('/authenticate', (req, res) => {
                 }
             })
         } else {
-            res.send({success: false, message: 'Username or password inccorect'})
+            res.send({success: false, message: 'Username or password incorrect'})
         }
     })
 })

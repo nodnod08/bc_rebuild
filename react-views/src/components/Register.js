@@ -2,6 +2,10 @@ import React from 'react';
 import './../assets/register.css'
 import SimpleReactValidator from 'simple-react-validator';
 import axios from 'axios'
+import { connect } from 'react-redux'
+import {
+    withRouter
+  } from 'react-router-dom'
 
 class Register extends React.Component {
     constructor() {
@@ -17,6 +21,12 @@ class Register extends React.Component {
             loading: false,
             success: ''
         };
+    }
+
+    componentDidUpdate(prevProps, prevState, snapShot) {
+        if(prevProps.isLoggedIn !== this.props.isLoggedIn) {
+            this.props.history.push('/')
+        }
     }
 
     inputBlur(event) {
@@ -117,4 +127,10 @@ class Register extends React.Component {
     }
 }
 
-export default Register;
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.account.isLoggedIn
+    }
+}
+
+export default connect(mapStateToProps, {})(withRouter(Register));

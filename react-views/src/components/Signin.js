@@ -24,7 +24,6 @@ class Signin extends React.Component {
             ...this.state, isLoggedIn: this.props.isLoggedIn
         })
         if(this.props.isLoggedIn) {
-        //    return <Redirect to='/' />
         this.props.history.push('/')
         }
     }
@@ -36,7 +35,15 @@ class Signin extends React.Component {
         username: this.state.username,
         password: this.state.password
     }).then(response => {
-        (response.data.success) ? this.props.login(response.data) : this.setState({ ...this.state, error: true })
+        console.log(response)
+        if (response.data.success) { 
+            this.props.login(response.data) 
+            this.setState({ ...this.state, error: false })
+            let local = JSON.stringify(response.data)
+            localStorage.setItem('authenticatedSE', local)
+        } else {
+            this.setState({ ...this.state, error: true })
+        }
     })
   }
 
@@ -62,6 +69,12 @@ class Signin extends React.Component {
                         <label>Password</label>
                         <input type="password" name="password" onChange={this.input.bind(this)} className="form-control form-control-sm" placeholder="Password"></input>
                     </div>
+                    {(this.state.error && this.state.success !== '') && 
+                        <div className="alert alert-dismissible alert-danger">
+                            <button type="button" className="close" data-dismiss="alert">&times;</button>
+                            Username or password incorrect.
+                        </div>
+                    }
                     <button type="submit" onClick={this.loginAttempt} className="btn btn-sm btn-primary submit">Login</button>
                 </form>
             </div>

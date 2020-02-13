@@ -1,7 +1,7 @@
 const initialState = {
   isLoggedIn: false,
-  user: {},
-  token: {}
+  user: null,
+  token: ''
 }
 
 export default function(state = initialState, action) {
@@ -18,8 +18,20 @@ export default function(state = initialState, action) {
           ...state,
           user: {},
           isLoggedIn: false,
-          data: {}
+          token: ''
         })
+      case 'RELOAD':
+          if(action.payload == null) {
+            return ({
+              ...state
+            })   
+          }
+          return ({
+            ...state,
+            user: action.payload.user,
+            isLoggedIn: true,
+            token: action.payload.token
+          })
       default:
         return ({
           ...state

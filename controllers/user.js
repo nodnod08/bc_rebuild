@@ -27,7 +27,7 @@ module.exports.authenticate = function(query, userCredentials, callback) {
                     const token = jwt.sign(result_final, database.jwt_secret, {
                         expiresIn: 604800
                     })
-                    callback(null, result, token)
+                    callback(null, result_final, token)
                 } else {
                     callback(null, null, null)
                 }

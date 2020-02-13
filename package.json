@@ -1,7 +1,7 @@
 {
   "name": "bc_rebuild",
   "version": "1.0.0",
-  "description": "Badopiece Colection\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dl\u001b[C\u001b[De\u001b[2~ction site\u001b[D\u001b[D\u001b[D\u001b[Dnew site",
+  "description": "Badopiece Colection",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
