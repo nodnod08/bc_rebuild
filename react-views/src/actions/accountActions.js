@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
 
 export const login = (userCredentials) => dispatch => {
     dispatch({
