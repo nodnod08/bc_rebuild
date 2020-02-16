@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const database = require('./../config/database')
 
 const UserSchema = new mongoose.Schema({
-    fromProcess: {
+    processFrom: {
         type: String
     },
     subId: {

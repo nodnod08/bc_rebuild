@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import { reload, logout } from '../actions/accountActions'
+import {
+    withRouter
+  } from 'react-router-dom'
 
 class Header extends React.Component{
   constructor() {
@@ -21,6 +24,16 @@ class Header extends React.Component{
         this.setState({
             ...this.state, isLoggedIn: this.props.isLoggedIn, user: this.props.user
         })
+        if(!this.props.isLoggedIn) {
+            this.props.history.push('/')
+            console.log('logout')
+        }
+    }
+
+    if (this.props.location !== prevProps.location) {
+        if(window.innerWidth < 992) {
+            document.querySelector('.removable').classList.remove('show')
+        }
     }
   }  
 
@@ -39,7 +52,7 @@ class Header extends React.Component{
                         <span className="navbar-toggler-icon"></span>
                     </button>
     
-                    <div className="collapse navbar-collapse" id="navbarColor01">
+                    <div className="collapse navbar-collapse removable" id="navbarColor01">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item">
                                 <Link className="nav-link" to="/">Home</Link>
@@ -95,4 +108,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {reload, logout})(Header);
+export default connect(mapStateToProps, {reload, logout})(withRouter(Header));

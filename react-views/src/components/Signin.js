@@ -11,7 +11,7 @@ class Signin extends React.Component {
   constructor() {
     super()
     this.state = {
-        username: '',
+        email: '',
         password: '',
         error: false,
         isLoggedIn: false
@@ -32,7 +32,7 @@ class Signin extends React.Component {
   loginAttempt = (event) => {
     event.preventDefault()  
     axios.post('/user/authenticate', {
-        username: this.state.username,
+        email: this.state.email,
         password: this.state.password
     }).then(response => {
         console.log(response)
@@ -62,8 +62,8 @@ class Signin extends React.Component {
                     <h4>Sign in</h4>
                     <br/>
                     <div className="form-group">
-                        <label>Username</label>
-                        <input type="text" name="username" onChange={this.input.bind(this)} className="form-control form-control-sm" aria-describedby="emailHelp" placeholder="Enter email"></input>
+                        <label>Email</label>
+                        <input type="email" name="email" onChange={this.input.bind(this)} className="form-control form-control-sm" aria-describedby="emailHelp" placeholder="Enter email"></input>
                     </div>
                     <div className="form-group">
                         <label>Password</label>
