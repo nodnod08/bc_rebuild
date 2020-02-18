@@ -106,12 +106,13 @@ router.post('/username', (req, res, next) => {
     }
 );
 
-router.post('/getUser', (req, res, next) => {
-    const token = { token: req.body.token }
+router.post('/checkJWT', (req, res) => {
+    const payload = JSON.parse(req.body.payloads) 
 
-    userController.getDecodeUser(token, (err, result) => {
-        console.log(result)
-        res.send(result)
+    userController.checkJWT(payload.token, (err, result) => {
+        res.send({
+            result: (err) ? err : {...result, message:'jwt not expired'}
+        })
     })
 }
 );

@@ -14,7 +14,9 @@ class Signin extends React.Component {
         email: '',
         password: '',
         error: false,
-        isLoggedIn: false
+        isLoggedIn: false,
+        loading: false,
+        message: ''
     };
   }
 
@@ -30,21 +32,30 @@ class Signin extends React.Component {
   }
 
   loginAttempt = (event) => {
-    event.preventDefault()  
-    axios.post('/user/authenticate', {
-        email: this.state.email,
-        password: this.state.password
-    }).then(response => {
-        console.log(response)
-        if (response.data.success) { 
-            this.props.login(response.data) 
-            this.setState({ ...this.state, error: false })
-            let local = JSON.stringify(response.data)
-            localStorage.setItem('authenticatedSE', local)
-        } else {
-            this.setState({ ...this.state, error: true })
-        }
+    event.preventDefault()
+    this.setState({
+        ...this.state, loading: true, error: false
     })
+    if(this.state.email === '' && this.state.password === '') {
+        this.setState({ ...this.state, error: true, message: 'Username or password required.' })
+    } else {  
+        axios.post('/user/authenticate', {
+            email: this.state.email,
+            password: this.state.password
+        }).then(response => {
+            this.setState({
+                ...this.state, loading: false
+            })
+            if (response.data.success) {  
+                this.setState({ ...this.state, error: false })
+                let local = JSON.stringify(response.data)
+                localStorage.setItem('authenticatedSE', local)
+                this.props.login(response.data)
+            } else {
+                this.setState({ ...this.state, error: true, message: 'Username or password incorrect.' })
+            }
+        })
+    }
   }
 
   input = (event) => {
@@ -69,10 +80,10 @@ class Signin extends React.Component {
                         <label>Password</label>
                         <input type="password" name="password" onChange={this.input.bind(this)} className="form-control form-control-sm" placeholder="Password"></input>
                     </div>
-                    {(this.state.error && this.state.success !== '') && 
+                    {this.state.loading && <img className="loader" alt="loader" width="50px" height="50px" src={require('./../assets/loader.svg')} />}
+                    {(this.state.error) && 
                         <div className="alert alert-dismissible alert-danger">
-                            <button type="button" className="close" data-dismiss="alert">&times;</button>
-                            Username or password incorrect.
+                            { this.state.message }
                         </div>
                     }
                     <button type="submit" onClick={this.loginAttempt} className="btn btn-sm btn-primary submit">Login</button>

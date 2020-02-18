@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import axios from 'axios'
 
 export const login = (userCredentials) => dispatch => {
     dispatch({
@@ -9,14 +9,24 @@ export const login = (userCredentials) => dispatch => {
 
 export const reload = () => dispatch => {
     const local = localStorage.getItem('authenticatedSE')
-    let payloads = ''
-    var decodedToken=jwt.decode(local, {complete: true});
-    console.log(decodedToken)
-    payloads = (local == null) ? null : JSON.parse(local)
-    dispatch({
-        type: 'RELOAD',
-        payload: payloads
-    })
+    let payloads = null
+    payloads = (local == null) ? null : local
+    if(payloads == null) {
+        dispatch({
+            type: 'RELOAD',
+            payload: payloads
+        })
+    } else {
+        axios.post('/user/checkJWT', {
+            payloads
+        }).then(response => {
+            console.log(response.data.result)
+            dispatch({
+                type: 'RELOAD',
+                payload: (response.data.result.message == 'jwt not expired' && response.data.result.validUser ) ? JSON.parse(payloads) : null
+            })
+        })
+    }
 }
 
 export const logout = () => dispatch => {

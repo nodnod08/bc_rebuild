@@ -26,11 +26,11 @@ class Header extends React.Component{
         })
         if(!this.props.isLoggedIn) {
             this.props.history.push('/')
-            console.log('logout')
         }
     }
 
     if (this.props.location !== prevProps.location) {
+        this.props.reload()
         if(window.innerWidth < 992) {
             document.querySelector('.removable').classList.remove('show')
         }

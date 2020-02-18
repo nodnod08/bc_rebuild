@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const database = require('./../config/database')
 const _ = require('lodash')
+import localStorage from 'localStorage'
 
 module.exports.addUser = function(newUser, callback) {
     if(newUser.processFrom == 'default') {
@@ -29,7 +30,7 @@ module.exports.authenticate = function(query, userCredentials, callback) {
                     delete result_final.password
 
                     const token = jwt.sign(result_final, database.jwt_secret, {
-                        expiresIn: 604800
+                        expiresIn: 180
                     })
                     callback(null, result_final, token)
                 } else {
@@ -66,16 +67,20 @@ module.exports.checkUsername = function(query, callback) {
     })
 }
 
-module.exports.getDecodeUser = async function(token, callback) {
-    var decoded = await jwt.decode(token.token.substring(7), database.jwt_secret);
+module.exports.checkJWT = async function(token, callback) {
+    jwt.verify(token.toString().substring(7), database.jwt_secret, async function(err, decoded) {
+        if(err) {
+            localStorage.removeItem('authenticatedSE')
+            callback(err, null)
+        } else {
+            // User.findById(decoded._id, function(err, result) {
+            //     callback(null, (result) ? {...decoded, validUser: true} : {...decoded, validUser: false})
+            // })
 
-    User.findOne({_id: decoded._id}, function(err, result) {
-        const result_final = result.toJSON()
-        delete result_final.password
-        
-        const queryResult = {
-            result: result_final
+            User.findOne({username: decoded.username}, function(err, result) {
+                await (result) ? '' : localStorage.removeItem('authenticatedSE')
+                callback(null, (result) ? {...decoded, validUser: true} : {...decoded, validUser: false})
+            })
         }
-        callback(null, queryResult)
-    })
+    });
 }
