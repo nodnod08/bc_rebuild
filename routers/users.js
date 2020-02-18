@@ -110,6 +110,7 @@ router.post('/checkJWT', (req, res) => {
     const payload = JSON.parse(req.body.payloads) 
 
     userController.checkJWT(payload.token, (err, result) => {
+        
         res.send({
             result: (err) ? err : {...result, message:'jwt not expired'}
         })

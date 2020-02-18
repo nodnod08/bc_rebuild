@@ -11,7 +11,6 @@ export const reload = () => dispatch => {
     const payloads = localStorage.getItem('authenticatedSE')
 
     if(payloads == null || payloads == '') {
-        console.log('dto yan')
         dispatch({
             type: 'RELOAD',
             payload: null
@@ -20,7 +19,11 @@ export const reload = () => dispatch => {
         axios.post('/user/checkJWT', {
             payloads
         }).then(response => {
-            console.log(response.data.result)
+            if(response.data.result.message == 'jwt expired' && !response.data.result.validUser ) { 
+                localStorage.removeItem('authenticatedSE')
+            }
+            return response    
+        }).then(response => {
             dispatch({
                 type: 'RELOAD',
                 payload: (response.data.result.message == 'jwt not expired' && response.data.result.validUser ) ? JSON.parse(payloads) : null

@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const database = require('./../config/database')
 const _ = require('lodash')
-const localStorage = require('localStorage')
 
 module.exports.addUser = function(newUser, callback) {
     if(newUser.processFrom == 'default') {
@@ -68,15 +67,21 @@ module.exports.checkUsername = function(query, callback) {
 }
 
 module.exports.checkJWT = async function(token, callback) {
-    // jwt.verify(token.toString().substring(7), database.jwt_secret, function(err, decoded) {
-    //     if(err) {
-    //         localStorage.removeItem('authenticatedSE', 0)
-    //         callback({...err, validUser: false}, null)
-    //     } else {
-    //         User.findById(decoded._id, function(err, result) {
-    //             (result) ? '' : localStorage.removeItem('authenticatedSE', 0)
-    //             callback(null, (result) ? {...decoded, validUser: true} : {...decoded, validUser: false})
-    //         })
-    //     }
-    // });
+    function validate() {
+        return new Promise((resolve, reject) => {
+            resolve(jwt.verify(token.toString().substring(7), database.jwt_secret))
+        })
+    }
+
+    try {
+        const result = await validate()
+        const user = await User.findById(result._id, function(err, result) {
+            return new Promise((resolve, reject) => {
+                resolve(result)
+            })
+        })
+        await callback(null, (user) ? {...result, validUser: true} : {...result, validUser: false})
+    } catch(err) {
+        await callback({...err, validUser: false}, null)
+    }
 }
