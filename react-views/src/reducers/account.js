@@ -23,7 +23,10 @@ export default function(state = initialState, action) {
       case 'RELOAD':
           if(action.payload == null) {
             return ({
-              ...state
+              ...state,
+              user: null,
+              isLoggedIn: false,
+              token: ''
             })   
           }
           return ({

@@ -8,13 +8,13 @@ export const login = (userCredentials) => dispatch => {
 }
 
 export const reload = () => dispatch => {
-    const local = localStorage.getItem('authenticatedSE')
-    let payloads = null
-    payloads = (local == null) ? null : local
-    if(payloads == null) {
+    const payloads = localStorage.getItem('authenticatedSE')
+
+    if(payloads == null || payloads == '') {
+        console.log('dto yan')
         dispatch({
             type: 'RELOAD',
-            payload: payloads
+            payload: null
         })
     } else {
         axios.post('/user/checkJWT', {

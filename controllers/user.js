@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const database = require('./../config/database')
 const _ = require('lodash')
-import localStorage from 'localStorage'
+const localStorage = require('localStorage')
 
 module.exports.addUser = function(newUser, callback) {
     if(newUser.processFrom == 'default') {
@@ -30,7 +30,7 @@ module.exports.authenticate = function(query, userCredentials, callback) {
                     delete result_final.password
 
                     const token = jwt.sign(result_final, database.jwt_secret, {
-                        expiresIn: 180
+                        expiresIn: 60
                     })
                     callback(null, result_final, token)
                 } else {
@@ -68,19 +68,15 @@ module.exports.checkUsername = function(query, callback) {
 }
 
 module.exports.checkJWT = async function(token, callback) {
-    jwt.verify(token.toString().substring(7), database.jwt_secret, async function(err, decoded) {
-        if(err) {
-            localStorage.removeItem('authenticatedSE')
-            callback(err, null)
-        } else {
-            // User.findById(decoded._id, function(err, result) {
-            //     callback(null, (result) ? {...decoded, validUser: true} : {...decoded, validUser: false})
-            // })
-
-            User.findOne({username: decoded.username}, function(err, result) {
-                await (result) ? '' : localStorage.removeItem('authenticatedSE')
-                callback(null, (result) ? {...decoded, validUser: true} : {...decoded, validUser: false})
-            })
-        }
-    });
+    // jwt.verify(token.toString().substring(7), database.jwt_secret, function(err, decoded) {
+    //     if(err) {
+    //         localStorage.removeItem('authenticatedSE', 0)
+    //         callback({...err, validUser: false}, null)
+    //     } else {
+    //         User.findById(decoded._id, function(err, result) {
+    //             (result) ? '' : localStorage.removeItem('authenticatedSE', 0)
+    //             callback(null, (result) ? {...decoded, validUser: true} : {...decoded, validUser: false})
+    //         })
+    //     }
+    // });
 }
