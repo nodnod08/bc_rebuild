@@ -11,7 +11,8 @@ class Header extends React.Component{
     super()
     this.state = {
         isLoggedIn: false,
-        user: {}
+        user: {},
+        ready: false
     };
   }  
 
