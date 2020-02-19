@@ -63,7 +63,6 @@ class Register extends React.Component {
                 password: this.state.password
             }).then(response => {
                 this.setState({
-                    loading: false,
                     username: '',
                     email: '',
                     password: '',
@@ -71,6 +70,10 @@ class Register extends React.Component {
                 })
                 this.setState({
                     success: (response.data.success) ? true : false
+                })
+            }).then(() => {
+                this.setState({
+                    ...this.state, loading: false
                 })
             })
         } else {

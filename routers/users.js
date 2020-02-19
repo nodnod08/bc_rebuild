@@ -26,32 +26,39 @@ router.post('/register',  (req, res) => {
 
 router.post('/checkUserFromSocial', (req, res) => {
 
-    userController.checkSubId(req.body.id, (err, result) => {
+    userController.checkGoogleId(req.body.googleId, (err, result) => {
         const newUser = new User({
-            firstname: req.body.firstName,
-            lastname: req.body.lastName,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
             email: req.body.email,
-            username: req.body.firstName,
+            username: req.body.firstname,
             usertype: 'user',
-            processFrom: 'social'
-        })
-        const token = jwt.sign(newUser.toJSON(), database.jwt_secret, {
-            expiresIn: 604800
+            img: req.body.img,
+            processFrom: 'social',
+            googleId: req.body.googleId
         })
 
+        if(result) {
+            delete result.googleId
+        } else {
+            delete newUser.googleId
+        }
+        
+        const token = jwt.sign((result) ? result.toJSON() : newUser.toJSON(), database.jwt_secret, {
+            expiresIn: 604800
+        })
         if(result){
-            res.json({success: true, message: 'Already registered', token: 'Bearer '+token, user: newUser})
+            res.json({success: true, message: 'Already registered', token: 'Bearer '+token, user: result})
         } else {
             userController.addUser(newUser, (err, result) => {
                 if(err) {
                     res.json({success: false, message: 'Failed to register new user'})
                 } else {
+                    delete newUser.googleId
                     res.json({success: true, message: 'Successfuly registered', token: 'Bearer '+token, user: newUser})
                 }
-                console.log(result)
             })
         }
-        console.log(result)
     })
 })
 

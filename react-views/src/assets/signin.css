@@ -9,4 +9,11 @@ form.signin {
     background: #404040;
     color: #fff;
     width: 100%;
+    margin-top: 5%;
+}
+
+.loader {
+    margin-left: 50%;
+    transform: translateX(-51%);
+    display: block;
 }

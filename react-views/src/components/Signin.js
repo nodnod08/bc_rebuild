@@ -3,9 +3,8 @@ import './../assets/signin.css'
 import axios from 'axios'
 import { login } from '../actions/accountActions'
 import { connect } from 'react-redux'
-import {
-    withRouter
-  } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
+import { GoogleLogin } from 'react-google-login';
 
 class Signin extends React.Component {
   constructor() {
@@ -43,9 +42,6 @@ class Signin extends React.Component {
             email: this.state.email,
             password: this.state.password
         }).then(response => {
-            this.setState({
-                ...this.state, loading: false
-            })
             if (response.data.success) {  
                 this.setState({ ...this.state, error: false })
                 let local = JSON.stringify(response.data)
@@ -54,6 +50,10 @@ class Signin extends React.Component {
             } else {
                 this.setState({ ...this.state, error: true, message: 'Username or password incorrect.' })
             }
+        }).then(() => {
+            this.setState({
+                ...this.state, loading: false
+            })
         })
     }
   }
@@ -62,6 +62,33 @@ class Signin extends React.Component {
       this.setState({
           ...this.state, [event.target.name] : event.target.value
       })
+  }
+
+  responseGoogle = (response) => {
+    this.setState({
+        ...this.state, loading: true
+    })  
+    const user = response.profileObj
+    axios.post('/user/checkUserFromSocial', {
+        firstname: user.givenName,
+        lastname: user.familyName,
+        email: user.email,
+        img: user.imageUrl,
+        googleId: user.googleId
+    }).then(response => {
+        if (response.data.success) {  
+            this.setState({ ...this.state, error: false })
+            let local = JSON.stringify(response.data)
+            localStorage.setItem('authenticatedSE', local)
+            this.props.login(response.data)
+        } else {
+            this.setState({ ...this.state, error: true, message: 'Something went wrong, please try again.' })
+        }
+    }).then(() => {
+        this.setState({
+            ...this.state, loading: false
+        })
+    })
   }
 
   render() {
@@ -86,6 +113,13 @@ class Signin extends React.Component {
                             { this.state.message }
                         </div>
                     }
+                    <GoogleLogin
+                        clientId="547432251334-c7qjf107o1bflg2if54j345uero5st98.apps.googleusercontent.com"
+                        buttonText="Login with Google"
+                        onSuccess={this.responseGoogle}
+                        onFailure={this.responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />
                     <button type="submit" onClick={this.loginAttempt} className="btn btn-sm btn-primary submit">Login</button>
                 </form>
             </div>
