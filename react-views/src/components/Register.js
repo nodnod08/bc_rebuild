@@ -6,11 +6,7 @@ import { connect } from 'react-redux'
 import {
     withRouter
 } from 'react-router-dom'
-import {
-    ReCaptchaV2,
-    EReCaptchaV2Size,
-    EReCaptchaV2Theme,
-} from 'react-recaptcha-x';
+import * as Recaptcha from 'react-recaptcha'
 
 class Register extends React.Component {
     constructor() {
@@ -33,6 +29,13 @@ class Register extends React.Component {
             this.props.history.push('/')
         }
     }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if (this.props.location !== nextProps.location) {
+    //         return true
+    //     }
+    //     return false
+    // }
 
 
     inputBlur(event) {
@@ -88,18 +91,22 @@ class Register extends React.Component {
         }
     }
 
-    recaptcha = token => {
-        if (typeof token === 'string') {
-        } else if (typeof token === 'boolean' && !token) {
-        } else if (token instanceof Error) {
-        }
+    recaptcha = function (response) {
+        console.log(response);
+        axios.post('https://www.google.com/recaptcha/api/siteverify', {
+            secret: '6LfhZtoUAAAAANzt0WdfpPSnW4u_iyp-EaLilSBW',
+            response: response,
+            remoteip: '0.0.0.0',
+        }).then(res => {
+            console.log(res)
+        })
     }
 
     render() {
         return (
             <div className="Register">
             <div className="row">
-                <div className="col-lg-4 col-md-6 col-sm-12">
+                <div className="col-lg-6 col-md-6 col-sm-12">
                     <form className="signin">
                         <h4>Create your Account</h4>
                         <br/>
@@ -125,13 +132,10 @@ class Register extends React.Component {
                             <small className="error">{this.validator.message('confirmPassword', this.state.confirmPassword, 'required|min:8|max:20')}</small>
                             {!this.state.match && <small className="error">Password not match.</small>}
                         </div>
-                        <ReCaptchaV2
-                            callback={this.recaptcha}
-                            theme={EReCaptchaV2Theme.Light}
-                            size={EReCaptchaV2Size.Normal}
-                            id="SE"
-                            data-test-id="SE"
-                            tabindex={0}
+                        <Recaptcha
+                            sitekey="6LfhZtoUAAAAAGD_MIxfNpRSdsyD42wfWRu1MvQr"
+                            render="explicit"
+                            verifyCallback={this.recaptcha}
                         />
                         <div className="form-group">
                             {this.state.loading && <img className="loader" alt="loader" width="50px" height="50px" src={require('./../assets/loader.svg')} />}
