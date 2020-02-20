@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { connect } from 'react-redux'
 import { reload, logout } from '../actions/accountActions'
 import {
@@ -49,8 +49,8 @@ class Header extends React.Component{
         <div className="Header">
             <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div className="container">
-                    <Link className="navbar-brand" to="/">
-                        <img width="50px" height="50px" src={require('./../assets/logo.png')}/></Link>
+                    <NavLink className="navbar-brand" to="/">
+                        <img width="50px" height="50px" src={require('./../assets/logo.png')}/></NavLink>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -58,16 +58,16 @@ class Header extends React.Component{
                     <div className="collapse navbar-collapse removable" id="navbarColor01">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item">
-                                <Link className="nav-link" to="/">Home</Link>
+                                <NavLink className="nav-link" to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/forums">Forum</Link>
+                                <NavLink className="nav-link" to="/forums">Forum</NavLink>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/trendings">Trending</Link>
+                                <NavLink className="nav-link" to="/trendings">Trending</NavLink>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/teams">Teams</Link>
+                                <NavLink className="nav-link" to="/teams">Teams</NavLink>
                             </li>
                         </ul>
                         <form className="form-inline mr-auto my-2 my-lg-0">
@@ -77,10 +77,10 @@ class Header extends React.Component{
                         { (!this.state.isLoggedIn) && 
                             <ul className="navbar-nav ml-auto">
                             <li className="nav-item">
-                                <Link className="nav-link" to="/signin">Sign in</Link>
+                                <NavLink className="nav-link" to="/signin">Sign in</NavLink>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/register">Create Account</Link>
+                                <NavLink className="nav-link" to="/register">Create Account</NavLink>
                             </li>
                         </ul>
                         }

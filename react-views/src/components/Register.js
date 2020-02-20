@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import {
     withRouter
 } from 'react-router-dom'
-import * as Recaptcha from 'react-recaptcha'
 
 class Register extends React.Component {
     constructor() {
@@ -92,13 +91,13 @@ class Register extends React.Component {
     }
 
     recaptcha = function (response) {
-        console.log(response);
-        axios.post('/user/validateRecaptcha', {
-            secret: '6LfhZtoUAAAAANzt0WdfpPSnW4u_iyp-EaLilSBW',
-            response: response
-        }).then(res => {
-            console.log(res)
-        })
+        console.log(response)
+        // axios.post('/user/validateRecaptcha', {
+        //     secret: '6LfhZtoUAAAAANzt0WdfpPSnW4u_iyp-EaLilSBW',
+        //     response: response
+        // }).then(res => {
+        //     console.log(res)
+        // })
     }
 
     render() {
@@ -131,11 +130,6 @@ class Register extends React.Component {
                             <small className="error">{this.validator.message('confirmPassword', this.state.confirmPassword, 'required|min:8|max:20')}</small>
                             {!this.state.match && <small className="error">Password not match.</small>}
                         </div>
-                        <Recaptcha
-                            sitekey="6LfhZtoUAAAAAGD_MIxfNpRSdsyD42wfWRu1MvQr"
-                            render="explicit"
-                            verifyCallback={this.recaptcha}
-                        />
                         <div className="form-group">
                             {this.state.loading && <img className="loader" alt="loader" width="50px" height="50px" src={require('./../assets/loader.svg')} />}
                             {(this.state.success && this.state.success !== '') && 

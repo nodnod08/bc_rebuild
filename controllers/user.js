@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const database = require('./../config/database')
 const _ = require('lodash')
+const axios = require('axios')
 
 module.exports.addUser = function(newUser, callback) {
     if(newUser.processFrom == 'default') {
