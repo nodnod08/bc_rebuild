@@ -58,7 +58,7 @@ class Header extends React.Component{
                     <div className="collapse navbar-collapse removable" id="navbarColor01">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/">Home</NavLink>
+                                <NavLink className="nav-link" exact to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/forums">Forum</NavLink>

@@ -46,14 +46,13 @@ class Signin extends React.Component {
                 this.setState({ ...this.state, error: false })
                 let local = JSON.stringify(response.data)
                 localStorage.setItem('authenticatedSE', local)
+                this.setState({
+                    ...this.state, loading: false
+                })
                 this.props.login(response.data)
             } else {
                 this.setState({ ...this.state, error: true, message: 'Username or password incorrect.' })
             }
-        }).then(() => {
-            this.setState({
-                ...this.state, loading: false
-            })
         })
     }
   }

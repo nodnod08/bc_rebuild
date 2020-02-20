@@ -81,7 +81,8 @@ router.post('/authenticate', (req, res) => {
                     lastname: result.lastname,
                     email: result.email,
                     username: result.username,
-                    usertype: result.usertype
+                    usertype: result.usertype,
+                    processFrom: result.processFrom
                 }
             })
         } else {
