@@ -29,7 +29,7 @@ module.exports.authenticate = function(query, userCredentials, callback) {
                     delete result_final.password
 
                     const token = jwt.sign(result_final, database.jwt_secret, {
-                        expiresIn: 60
+                        expiresIn: 604800
                     })
                     callback(null, result_final, token)
                 } else {
@@ -51,8 +51,8 @@ module.exports.checkEmail = function(query, callback) {
     })
 }
 
-module.exports.checkSubId = function(id, callback) {
-    User.findOne({subId: id}, function(err, result) {
+module.exports.checkGoogleId = function(id, callback) {
+    User.findOne({googleId: id}, function(err, result) {
         callback(null, result)
     })
 }

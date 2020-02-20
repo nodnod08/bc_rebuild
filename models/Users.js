@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     processFrom: {
         type: String
     },
-    subId: {
+    googleId: {
         type: String
     },
     firstname: {
@@ -26,6 +26,9 @@ const UserSchema = new mongoose.Schema({
         type: String
     },
     usertype: {
+        type: String
+    },
+    img: {
         type: String
     }
 })

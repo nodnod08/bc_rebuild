@@ -7,13 +7,14 @@ import Forums from './components/Forums';
 import Teams from './components/Teams';
 import Signin from './components/Signin';
 import Register from './components/Register';
-
 import {
   BrowserRouter as Router, Switch, Route
 } from "react-router-dom";
-
 import { Provider } from 'react-redux'
 import store from './store'
+import {
+  ReCaptchaProvider
+} from 'react-recaptcha-x'
 
 function App() {
 
@@ -38,7 +39,13 @@ function App() {
                   <Teams />
                 </Route>
                 <Route path="/register">
+                <ReCaptchaProvider
+                  siteKeyV2="6LfhZtoUAAAAAGD_MIxfNpRSdsyD42wfWRu1MvQr"
+                  langCode="en"
+                  hideV3Badge={true}
+                >
                   <Register />
+                </ReCaptchaProvider>
                 </Route>
                 <Route path="/signin">
                   <Signin />

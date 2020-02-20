@@ -5,6 +5,7 @@ import { reload, logout } from '../actions/accountActions'
 import {
     withRouter
   } from 'react-router-dom'
+import Avatar from 'react-avatar';  
 
 class Header extends React.Component{
   constructor() {
@@ -48,7 +49,8 @@ class Header extends React.Component{
         <div className="Header">
             <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div className="container">
-                    <Link className="navbar-brand" to="/">Navbar</Link>
+                    <Link className="navbar-brand" to="/">
+                        <img width="50px" height="50px" src={require('./../assets/logo.png')}/></Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -85,7 +87,15 @@ class Header extends React.Component{
                         { (this.state.isLoggedIn) && 
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item dropdown">
-                                    <a style={{cursor: "pointer"}} className="nav-link usernameToggle dropdown-toggle" data-toggle="dropdown" id="download" aria-expanded="true">{ this.state.user.username } <span className="caret"></span></a>
+                                    { (this.state.user.processFrom == 'default') && 
+                                        <a style={{cursor: "pointer"}} className="nav-link usernameToggle dropdown-toggle" data-toggle="dropdown" id="download" aria-expanded="true">
+                                        { this.state.user.username }
+                                        <span className="caret"></span></a>
+                                    }
+                                    { (this.state.user.processFrom == 'social') && 
+                                        <a style={{cursor: "pointer"}} className="nav-link usernameToggle" data-toggle="dropdown" id="download" aria-expanded="true">
+                                        <Avatar size="23" round={true} name={ this.state.user.firstname+" "+ this.state.user.lastname } src={this.state.user.img} /></a>    
+                                    }
                                     <div className="dropdown-menu" aria-labelledby="download">
                                         <button className="dropdown-item">Settings</button>
                                         <button className="dropdown-item" type="button">My Posts</button>

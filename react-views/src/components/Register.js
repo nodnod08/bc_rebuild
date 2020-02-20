@@ -5,7 +5,12 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import {
     withRouter
-  } from 'react-router-dom'
+} from 'react-router-dom'
+import {
+    ReCaptchaV2,
+    EReCaptchaV2Size,
+    EReCaptchaV2Theme,
+} from 'react-recaptcha-x';
 
 class Register extends React.Component {
     constructor() {
@@ -28,6 +33,7 @@ class Register extends React.Component {
             this.props.history.push('/')
         }
     }
+
 
     inputBlur(event) {
         this.setState({
@@ -63,7 +69,6 @@ class Register extends React.Component {
                 password: this.state.password
             }).then(response => {
                 this.setState({
-                    loading: false,
                     username: '',
                     email: '',
                     password: '',
@@ -72,10 +77,21 @@ class Register extends React.Component {
                 this.setState({
                     success: (response.data.success) ? true : false
                 })
+            }).then(() => {
+                this.setState({
+                    ...this.state, loading: false
+                })
             })
         } else {
             this.validator.showMessages();
             this.forceUpdate();
+        }
+    }
+
+    recaptcha = token => {
+        if (typeof token === 'string') {
+        } else if (typeof token === 'boolean' && !token) {
+        } else if (token instanceof Error) {
         }
     }
 
@@ -109,6 +125,14 @@ class Register extends React.Component {
                             <small className="error">{this.validator.message('confirmPassword', this.state.confirmPassword, 'required|min:8|max:20')}</small>
                             {!this.state.match && <small className="error">Password not match.</small>}
                         </div>
+                        <ReCaptchaV2
+                            callback={this.recaptcha}
+                            theme={EReCaptchaV2Theme.Light}
+                            size={EReCaptchaV2Size.Normal}
+                            id="SE"
+                            data-test-id="SE"
+                            tabindex={0}
+                        />
                         <div className="form-group">
                             {this.state.loading && <img className="loader" alt="loader" width="50px" height="50px" src={require('./../assets/loader.svg')} />}
                             {(this.state.success && this.state.success !== '') && 
