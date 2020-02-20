@@ -5,6 +5,7 @@ const User = require('./../models/Users')
 const passport = require('passport')
 const userController = require('./../controllers/user')
 const database = require('./../config/database')
+const axios = require('axios')
 
 router.post('/register',  (req, res) => {
     const newUser = new User({
@@ -114,15 +115,28 @@ router.post('/username', (req, res, next) => {
 );
 
 router.post('/checkJWT', (req, res) => {
-    const payload = JSON.parse(req.body.payloads) 
+        const payload = JSON.parse(req.body.payloads) 
 
-    userController.checkJWT(payload.token, (err, result) => {
-        
-        res.send({
-            result: (err) ? err : {...result, message:'jwt not expired'}
+        userController.checkJWT(payload.token, (err, result) => {
+            
+            res.send({
+                result: (err) ? err : {...result, message:'jwt not expired'}
+            })
         })
-    })
-}
+    }
+);
+
+router.post('/validateRecaptcha', (req, res) => {
+        const payload = {
+            response: req.body.response,
+            secret: req.body.secret
+        }
+
+        axios.post('https://www.google.com/recaptcha/api/siteverify', payload)
+        .then(res => {
+            console.log(res)
+        })
+    }
 );
 
 

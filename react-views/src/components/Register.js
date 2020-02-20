@@ -93,10 +93,9 @@ class Register extends React.Component {
 
     recaptcha = function (response) {
         console.log(response);
-        axios.post('https://www.google.com/recaptcha/api/siteverify', {
+        axios.post('/user/validateRecaptcha', {
             secret: '6LfhZtoUAAAAANzt0WdfpPSnW4u_iyp-EaLilSBW',
-            response: response,
-            remoteip: '0.0.0.0',
+            response: response
         }).then(res => {
             console.log(res)
         })
