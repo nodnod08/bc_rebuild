@@ -6,6 +6,8 @@ import {
     withRouter
   } from 'react-router-dom'
 import Avatar from 'react-avatar';  
+import MicroModal from 'micromodal';
+import "./../assets/micromodal.css";
 
 class Header extends React.Component{
   constructor() {
@@ -13,7 +15,8 @@ class Header extends React.Component{
     this.state = {
         isLoggedIn: false,
         user: {},
-        ready: false
+        ready: false,
+        addPostModal: false
     };
   }  
 
@@ -47,6 +50,27 @@ class Header extends React.Component{
   render() {
     return (
         <div className="Header">
+            <div className="modal micromodal-slide" id="modal-1" aria-hidden="true">
+                <div className="modal__overlay" tabIndex="-1" data-micromodal-close>
+                <div className="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                    <header className="modal__header">
+                    <h2 className="modal__title" id="modal-1-title">
+                        Micromodal
+                    </h2>
+                    <button className="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                    </header>
+                    <main className="modal__content" id="modal-1-content">
+                    <p>
+                        Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
+                    </p>
+                    </main>
+                    <footer className="modal__footer">
+                    <button className="modal__btn modal__btn-primary">Continue</button>
+                    <button className="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+                    </footer>
+                </div>
+                </div>
+            </div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
                 <div className="container">
                     <NavLink className="navbar-brand" to="/">
@@ -97,9 +121,11 @@ class Header extends React.Component{
                                         <Avatar size="23" round={true} name={ this.state.user.firstname+" "+ this.state.user.lastname } src={this.state.user.img} /></a>    
                                     }
                                     <div className="dropdown-menu" aria-labelledby="download">
-                                        <button className="dropdown-item">Settings</button>
-                                        <button className="dropdown-item" type="button">My Posts</button>
-                                        <button className="dropdown-item" onClick={this.props.logout} type="button">Logout</button>
+                                        <button className="dropdown-item"><i className="fa fa-cogs"></i> Settings</button>
+                                        <button className="dropdown-item" type="button"><i className="fa fa-clipboard"></i> My Post(s)</button>
+                                        <button className="dropdown-item" onClick={() => MicroModal.show("modal-1")} type="button"><i className="fa fa-clipboard"></i> Create Post</button>
+                                        <div className="dropdown-divider"></div>
+                                        <button className="dropdown-item" onClick={this.props.logout} type="button"><i className="fa fa-sign-out-alt"></i> Logout</button>
                                     </div>
                                 </li>
                             </ul>
