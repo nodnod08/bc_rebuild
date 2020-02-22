@@ -13,6 +13,7 @@
     "react-avatar": "^3.9.1",
     "react-dom": "^16.12.0",
     "react-google-login": "^5.1.1",
+    "react-google-recaptcha": "^2.0.1",
     "react-recaptcha": "^2.3.10",
     "react-recaptcha-x": "^1.1.1",
     "react-redux": "^7.1.3",

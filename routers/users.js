@@ -5,7 +5,9 @@ const User = require('./../models/Users')
 const passport = require('passport')
 const userController = require('./../controllers/user')
 const database = require('./../config/database')
-
+const axios = require('axios')
+const CircularJSON = require('circular-json');
+'use strict'
 router.post('/register',  (req, res) => {
     const newUser = new User({
         email: req.body.email,
@@ -124,6 +126,18 @@ router.post('/checkJWT', (req, res) => {
             })
         })
     }
+);
+
+router.post('/validateRecaptcha', (req, res) => {
+    const payload = {
+        response: req.body.response
+    }
+
+    axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=6LfhZtoUAAAAANzt0WdfpPSnW4u_iyp-EaLilSBW&response=${payload.response}`)
+    .then(response => {
+        res.send({result: response.data})
+    })
+}
 );
 
 
