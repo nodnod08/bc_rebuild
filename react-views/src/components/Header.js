@@ -8,6 +8,9 @@ import {
 import Avatar from 'react-avatar';  
 import MicroModal from 'micromodal';
 import "./../assets/micromodal.css";
+import CKEditor from 'ckeditor4-react';
+import { FilePond, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
 
 class Header extends React.Component{
   constructor() {
@@ -16,7 +19,8 @@ class Header extends React.Component{
         isLoggedIn: false,
         user: {},
         ready: false,
-        addPostModal: false
+        addPostModal: false,
+        ckData: '',
     };
   }  
 
@@ -42,6 +46,20 @@ class Header extends React.Component{
     }
   }  
 
+  getData( changeEvent ) {
+    this.setState({
+        ...this.state, ckData: changeEvent.editor.getData()
+    })
+  }
+
+  filing(fileItems) {
+    console.log(fileItems)
+  }
+
+  postNow = () => {
+      console.log(this.state.ckData)
+  }
+
   logout = () => {
     this.props.logout()
     localStorage.removeItem('authenticatedSE')
@@ -55,19 +73,37 @@ class Header extends React.Component{
                 <div className="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
                     <header className="modal__header">
                     <h2 className="modal__title" id="modal-1-title">
-                        Micromodal
+                        Create your Post
                     </h2>
                     <button className="modal__close" aria-label="Close modal" data-micromodal-close></button>
                     </header>
                     <main className="modal__content" id="modal-1-content">
-                    <p>
-                        Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
-                    </p>
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <form>
+                                <div className="form-group">
+                                    <label>Post Title</label>
+                                    <input type="text" className="form-control form-control-sm" placeholder="Place your Title here..."/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Description</label>
+                                    <CKEditor
+                                        onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
+                                        type="classic"
+                                        onChange={ this.getData.bind(this) }
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Add Files (optional)</label><br/>
+                                    <FilePond allowMultiple={true} maxFiles={5} name="files" className="files" onupdatefiles={this.filing.bind(this)}></FilePond>
+                                </div>
+                                <div className="form-group">
+                                    <button type="button" onClick={ this.postNow } className="btn btn-success btn-sm">Post</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     </main>
-                    <footer className="modal__footer">
-                    <button className="modal__btn modal__btn-primary">Continue</button>
-                    <button className="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
-                    </footer>
                 </div>
                 </div>
             </div>
@@ -123,7 +159,7 @@ class Header extends React.Component{
                                     <div className="dropdown-menu" aria-labelledby="download">
                                         <button className="dropdown-item"><i className="fa fa-cogs"></i> Settings</button>
                                         <button className="dropdown-item" type="button"><i className="fa fa-clipboard"></i> My Post(s)</button>
-                                        <button className="dropdown-item" onClick={() => MicroModal.show("modal-1")} type="button"><i className="fa fa-clipboard"></i> Create Post</button>
+                                        <button className="dropdown-item" onClick={() => MicroModal.show("modal-1")} type="button"><i className="fa fa-plus"></i> Create Post</button>
                                         <div className="dropdown-divider"></div>
                                         <button className="dropdown-item" onClick={this.props.logout} type="button"><i className="fa fa-sign-out-alt"></i> Logout</button>
                                     </div>

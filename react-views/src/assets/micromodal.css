@@ -149,3 +149,11 @@
   .micromodal-slide .modal__overlay {
     will-change: transform;
   }
+
+  .ck.ck-editor {
+    overflow: hidden;
+  }
+
+  .ck-content {
+    min-height: 150px;
+  }

@@ -63,31 +63,32 @@ class Signin extends React.Component {
       })
   }
 
-  responseGoogle = (response) => {
-    this.setState({
-        ...this.state, loading: true
-    })  
-    const user = response.profileObj
-    axios.post('/user/checkUserFromSocial', {
-        firstname: user.givenName,
-        lastname: user.familyName,
-        email: user.email,
-        img: user.imageUrl,
-        googleId: user.googleId
-    }).then(response => {
-        if (response.data.success) {  
-            this.setState({ ...this.state, error: false })
-            let local = JSON.stringify(response.data)
-            localStorage.setItem('authenticatedSE', local)
-            this.props.login(response.data)
-        } else {
-            this.setState({ ...this.state, error: true, message: 'Something went wrong, please try again.' })
-        }
-    }).then(() => {
+  responseGoogle = (response) => { 
+    if(typeof response.error == 'undefined' || typeof response.error == undefined) {
         this.setState({
-            ...this.state, loading: false
+            ...this.state, loading: true
+        }) 
+        const user = response.profileObj
+        axios.post('/user/checkUserFromSocial', {
+            firstname: user.givenName,
+            lastname: user.familyName,
+            email: user.email,
+            img: user.imageUrl,
+            googleId: user.googleId
+        }).then(response => {
+            if (response.data.success) {  
+                this.setState({ ...this.state, error: false })
+                let local = JSON.stringify(response.data)
+                localStorage.setItem('authenticatedSE', local)
+                this.setState({
+                    ...this.state, loading: false
+                })
+                this.props.login(response.data)
+            } else {
+                this.setState({ ...this.state, error: true, message: 'Something went wrong, please try again.' })
+            }
         })
-    })
+    }
   }
 
   render() {
