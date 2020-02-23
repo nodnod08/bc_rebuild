@@ -11,6 +11,7 @@ import "./../assets/micromodal.css";
 import CKEditor from 'ckeditor4-react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
+import axios from 'axios';
 
 class Header extends React.Component{
   constructor() {
@@ -21,6 +22,7 @@ class Header extends React.Component{
         ready: false,
         addPostModal: false,
         ckData: '',
+        fileItems: []
     };
   }  
 
@@ -53,11 +55,16 @@ class Header extends React.Component{
   }
 
   filing(fileItems) {
-    console.log(fileItems)
+    this.setState({
+        ...this.state, files: fileItems
+    })
   }
 
   postNow = () => {
       console.log(this.state.ckData)
+      axios.post('/post/insert', {
+          fileItems: this.state.fileItems
+      })
   }
 
   logout = () => {

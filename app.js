@@ -23,6 +23,7 @@ app.use(passport.session())
 require('./config/passport')(passport)
 
 app.use('/user', require('./routers/users'))
+app.use('/post', require('./routers/posts'))
 
 mongoose.connect(config.database ,
  {useNewUrlParser: true, useUnifiedTopology: true}, () => console.log('Database Connected!')
