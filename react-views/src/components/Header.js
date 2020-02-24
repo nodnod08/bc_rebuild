@@ -22,7 +22,7 @@ class Header extends React.Component{
         ready: false,
         addPostModal: false,
         ckData: '',
-        fileItems: []
+        files: []
     };
   }  
 
@@ -56,15 +56,28 @@ class Header extends React.Component{
 
   filing(fileItems) {
     this.setState({
-        ...this.state, files: fileItems
-    })
+        ...this.state, files: []
+    }) 
+    fileItems.map(file => {
+        this.setState((prevState)=>{
+            files: prevState.files.push(file.file)
+        })
+    })  
   }
 
   postNow = () => {
-      console.log(this.state.ckData)
-      axios.post('/post/insert', {
-          fileItems: this.state.fileItems
-      })
+      const formData = new FormData();
+      formData.append('files',this.state.files);
+      for (var x = 0; x < this.state.files.length; x++) {
+        formData.append("files[]", this.state.files[x]);
+      }
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+      };
+      console.log(this.state.files)
+      axios.post('/post/insert', formData, config)
   }
 
   logout = () => {
