@@ -12,9 +12,9 @@ router.post('/insert',  (req, res) => {
   const storage = multer.diskStorage({
       destination: "./storage/",
       filename: function(req, file, cb){
-        filename = "IMAGE-" + Date.now() + file.originalname.split(' ').join('-').split('.')[0] + path.extname(file.originalname)
+        filename = file.originalname.split(' ').join('_').split('.').slice(0, -1).join('_') + '_' + Date.now() + path.extname(file.originalname)
         files.push(filename)
-        cb(null,"IMAGE-" + filename);
+        cb(null, filename);
       }
   });
   
