@@ -7,7 +7,9 @@ const userController = require('./../controllers/user')
 const database = require('./../config/database')
 const axios = require('axios')
 const CircularJSON = require('circular-json');
+
 'use strict'
+
 router.post('/register',  (req, res) => {
     const newUser = new User({
         email: req.body.email,

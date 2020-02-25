@@ -21,8 +21,12 @@ class Header extends React.Component{
         user: {},
         ready: false,
         addPostModal: false,
+        title: '',
         ckData: '',
-        files: []
+        files: [],
+        error: false,
+        message: '',
+        loading: false
     };
   }  
 
@@ -48,6 +52,12 @@ class Header extends React.Component{
     }
   }  
 
+  input = (event) => {
+    this.setState({
+        ...this.state, [event.target.name] : event.target.value
+    })
+  }
+
   getData( changeEvent ) {
     this.setState({
         ...this.state, ckData: changeEvent.editor.getData()
@@ -66,18 +76,34 @@ class Header extends React.Component{
   }
 
   postNow = () => {
-      const formData = new FormData();
-      formData.append('files',this.state.files);
-      for (var x = 0; x < this.state.files.length; x++) {
-        formData.append("files[]", this.state.files[x]);
-      }
+      if(this.state.ckData != '' && this.state.title != '') {
+        const formData = new FormData();
+        formData.append("title", this.state.title);
+        formData.append("description", this.state.ckData);  
+        const user = JSON.stringify(localStorage.getItem('authenticatedSE'))
+        formData.append("user", user);  
+        this.setState({
+            ...this.state, error: false, message: '', loading: true
+        })
+
+        if(this.state.files.length > 0) {
+            for (var x = 0; x < this.state.files.length; x++) {
+                formData.append("files[]", this.state.files[x]);
+            }
+        }
         const config = {
             headers: {
-                'content-type': 'multipart/form-data'
+                'enctype': 'multipart/form-data'
             }
-      };
-      console.log(this.state.files)
-      axios.post('/post/insert', formData, config)
+        };
+        axios.post('/post/insert', formData, config).then(res => {
+
+        })
+      } else {
+          this.setState({
+              ...this.state, error: true, message: 'Make sure it has a title and description.'
+          })
+      }
   }
 
   logout = () => {
@@ -103,7 +129,7 @@ class Header extends React.Component{
                             <form>
                                 <div className="form-group">
                                     <label>Post Title</label>
-                                    <input type="text" className="form-control form-control-sm" placeholder="Place your Title here..."/>
+                                    <input type="text" name="title" className="form-control form-control-sm" onChange={this.input.bind(this)} placeholder="Place your Title here..."/>
                                 </div>
                                 <div className="form-group">
                                     <label>Description</label>
@@ -117,6 +143,12 @@ class Header extends React.Component{
                                     <label>Add Files (optional)</label><br/>
                                     <FilePond allowMultiple={true} maxFiles={5} name="files" className="files" onupdatefiles={this.filing.bind(this)}></FilePond>
                                 </div>
+                                {this.state.loading && <img className="loader" alt="loader" width="50px" height="50px" src={require('./../assets/loader.svg')} />}
+                                {(this.state.error) && 
+                                    <div className="alert alert-dismissible alert-danger">
+                                        { this.state.message }
+                                    </div>
+                                }
                                 <div className="form-group">
                                     <button type="button" onClick={ this.postNow } className="btn btn-success btn-sm">Post</button>
                                 </div>
