@@ -25,6 +25,7 @@ class Header extends React.Component{
         ckData: '',
         files: [],
         error: false,
+        success: false,
         message: '',
         loading: false
     };
@@ -97,7 +98,15 @@ class Header extends React.Component{
             }
         };
         axios.post('/post/insert', formData, config).then(res => {
-
+            if(res.data.success) {
+                this.setState({
+                    ...this.state, error: false, success: true,  message: 'Your post has been uploaded.', loading: false
+                })
+            } else {
+                this.setState({
+                    ...this.state, error: true, success: false, message: 'Some went wrong, try again later.', loading: false
+                })
+            }
         })
       } else {
           this.setState({
@@ -146,6 +155,11 @@ class Header extends React.Component{
                                 {this.state.loading && <img className="loader" alt="loader" width="50px" height="50px" src={require('./../assets/loader.svg')} />}
                                 {(this.state.error) && 
                                     <div className="alert alert-dismissible alert-danger">
+                                        { this.state.message }
+                                    </div>
+                                }
+                                {(this.state.success) && 
+                                    <div className="alert alert-dismissible alert-success">
                                         { this.state.message }
                                     </div>
                                 }

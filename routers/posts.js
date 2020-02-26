@@ -30,12 +30,18 @@ router.post('/insert',  (req, res) => {
     }
     postController.addPost(user.user, posting, files, (err, result) => {
       if(err) {
-        res.send(err)
+        res.send({...err, success:false})
       } else {
-        res.send(result)
+        res.send({...result, success:true})
       }
     })
   });
+})
+
+router.get('/getAllPosts', (req, res) => {
+  postController.getAllPosts(null, (err, result) => {
+    (err) ? res.send({ result: err }) : res.send({ result: result })
+  })
 })
 
 
