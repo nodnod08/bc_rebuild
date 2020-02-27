@@ -10,7 +10,7 @@ const postController = require('./../controllers/post')
 router.post('/insert',  (req, res) => {
   const files = []
   const storage = multer.diskStorage({
-      destination: "/var/www/storage/",
+      destination: "./storage/",
       filename: function(req, file, cb){
         filename = file.originalname.split(' ').join('_').split('.').slice(0, -1).join('_') + '_' + Date.now() + path.extname(file.originalname)
         files.push(filename)

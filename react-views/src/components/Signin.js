@@ -51,7 +51,7 @@ class Signin extends React.Component {
                 })
                 this.props.login(response.data)
             } else {
-                this.setState({ ...this.state, error: true, message: 'Username or password incorrect.' })
+                this.setState({ ...this.state, error: true, loading: false, message: 'Username or password incorrect.' })
             }
         })
     }

@@ -3,17 +3,17 @@ const File = require('./../models/Files')
 const User = require('./../models/Users')
 
 module.exports.addPost = function(user, posting, files, callback) {
-    User.findById(user.id).then(result => {
-        if(result) {
+    User.findById(user._id).then(result => {
+        try {
             const filesContainer = []
             const post = new Post({
-                user: user.id,
+                user: result._id,
                 title: posting.title,
                 description: posting.description
             })
             for(i=0; i<files.length; i++) {
                 const fileCreating = new File({
-                    user: user.id,
+                    user: result._id,
                     filename: files[i],
                     post: post.id
                 })
@@ -24,16 +24,18 @@ module.exports.addPost = function(user, posting, files, callback) {
                 filesContainer[i].save()
             }
             post.save(null, callback)
-
-
-        } else {
-            callback("user not found", null)
+        } catch (err) {
+            callback(err, null)
         }
     })
 }
 
 module.exports.getAllPosts = async function(word, callback) {
-    const post = await Post.find({}).populate('files').then((err, result) => {
-        callback(err, result)
-    })
+    try {
+        const post = await Post.find({}).populate('user', '-password').populate('files').then((result) => {
+            callback(null, result)
+        })
+    } catch(err) {
+        callback(err, null)
+    }
 }

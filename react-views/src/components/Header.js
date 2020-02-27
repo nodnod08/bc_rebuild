@@ -84,7 +84,7 @@ class Header extends React.Component{
         const user = JSON.stringify(localStorage.getItem('authenticatedSE'))
         formData.append("user", user);  
         this.setState({
-            ...this.state, error: false, message: '', loading: true
+            ...this.state, error: false, success: false, message: '', loading: true
         })
 
         if(this.state.files.length > 0) {
@@ -98,6 +98,7 @@ class Header extends React.Component{
             }
         };
         axios.post('/post/insert', formData, config).then(res => {
+            console.log(res)
             if(res.data.success) {
                 this.setState({
                     ...this.state, error: false, success: true,  message: 'Your post has been uploaded.', loading: false
@@ -187,7 +188,7 @@ class Header extends React.Component{
                                 <NavLink className="nav-link" exact to="/">Home</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link" to="/forums">Forum</NavLink>
+                                <NavLink className="nav-link" to="/forums?page=1">Forum</NavLink>
                             </li>
                             <li className="nav-item">
                                 <NavLink className="nav-link" to="/trendings">Trending</NavLink>

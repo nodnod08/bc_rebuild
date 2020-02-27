@@ -15,6 +15,8 @@ class Register extends React.Component {
         this.state = {
             email: '',
             username: '',
+            firstname: '',
+            lastname: '',
             password: '',
             confirmPassword: '',
             emailExist: false,
@@ -68,12 +70,16 @@ class Register extends React.Component {
             })
             axios.post(`/user/register`, {
                 username: this.state.username,
+                firstname: this.state.firstname,
+                lastname: this.state.lastname,
                 email: this.state.email,
                 password: this.state.password
             }).then(response => {
                 this.setState({
                     username: '',
                     email: '',
+                    firstname: '',
+                    lastname: '',
                     password: '',
                     confirmPassword: '',
                 })
@@ -112,6 +118,15 @@ class Register extends React.Component {
                             <small className="error">{this.validator.message('email', this.state.email, 'required|email')}</small>
                             {this.state.emailExist && <small className="error">Email is already exist.</small>}
                         </div>
+                        <div className="form-group">
+                            <label>First name</label>
+                            <input type="text" name="firstname" className="form-control form-control-sm" placeholder="Firstname" onChange={this.inputBlur.bind(this)}></input>
+                            <small className="error">{this.validator.message('firstname', this.state.firstname, 'required')}</small>
+                        </div>
+                        <div className="form-group">
+                            <label>Last name</label>
+                            <input type="test" name="lastname" className="form-control form-control-sm" placeholder="Lastname" onChange={this.inputBlur.bind(this)}></input>
+                            <small className="error">{this.validator.message('lastname', this.state.lastname, 'required')}</small>                        </div>
                         <div className="form-group">
                             <label>Username</label>
                             <input type="text" name="username" className="form-control form-control-sm" placeholder="Username" onChange={this.inputBlur.bind(this)}></input>

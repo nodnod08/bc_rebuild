@@ -1,0 +1,19 @@
+.post {
+    background-color: #ededed;
+    max-width: 600px;
+    padding: 2%;
+    margin: 20px 0px;
+}
+
+.title {
+    cursor: pointer;
+    transition: .1s;
+}
+
+.title:hover {
+    color: #00cf6e;
+}
+
+.title:focus {
+    color: #00cf6e;
+}

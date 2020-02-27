@@ -6,13 +6,16 @@ const passport = require('passport')
 const userController = require('./../controllers/user')
 const database = require('./../config/database')
 const axios = require('axios')
-const CircularJSON = require('circular-json');
 
 'use strict'
 
 router.post('/register',  (req, res) => {
     const newUser = new User({
         email: req.body.email,
+        username: req.body.username,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        fullname: req.body.firstname + ' ' + req.body.lastname,
         username: req.body.username,
         password: req.body.password,
         usertype: 'user',
@@ -34,6 +37,7 @@ router.post('/checkUserFromSocial', (req, res) => {
         const newUser = new User({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
+            fullname: req.body.firstname + ' ' + req.body.lastname,
             email: req.body.email,
             username: req.body.firstname,
             usertype: 'user',
@@ -80,9 +84,10 @@ router.post('/authenticate', (req, res) => {
                 message: 'Successfuly logged in',
                 token: 'Bearer '+token,
                 user: {
-                    id: result._id,
+                    _id: result._id,
                     firstname: result.firstname,
                     lastname: result.lastname,
+                    fullname: result.fullname,
                     email: result.email,
                     username: result.username,
                     usertype: result.usertype,

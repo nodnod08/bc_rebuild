@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Index from './components/Index';
 import Trends from './components/Trends';
 import Forums from './components/Forums';
+import Forum from './components/Forum';
 import Teams from './components/Teams';
 import Signin from './components/Signin';
 import Register from './components/Register';
@@ -23,24 +24,13 @@ function App() {
           <Switch>
             <Fragment>
               <div className="container mt-5">
-                <Route exact path="/">
-                  <Index />
-                </Route>
-                <Route path="/trendings">
-                  <Trends />
-                </Route>
-                <Route path="/forums">
-                  <Forums />
-                </Route>
-                <Route path="/teams">
-                  <Teams />
-                </Route>
-                <Route path="/register">
-                  <Register />
-                </Route>
-                <Route path="/signin">
-                  <Signin />
-                </Route>
+                <Route exact path="/" component={ Index }/>
+                <Route path="/trendings" component={ Trends }/>
+                <Route path="/forums" component={ Forums }/>
+                <Route path="/forum/:id" component={ Forum }/>
+                <Route path="/teams" component={ Teams }/>
+                <Route path="/register" component={ Register } />
+                <Route path="/signin" component={ Signin } />
               </div>
             </Fragment>
           </Switch>
