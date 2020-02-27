@@ -18,12 +18,6 @@ class Forums extends React.Component {
     this.getPosts()
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      window.scrollTo(0, 0)
-    }
-  }
-
   // all functions
 
   getPosts = () => {
@@ -42,7 +36,7 @@ class Forums extends React.Component {
             <div className="row">
             {this.state.posts.map((value, index) => {
               return <div key={index} className="post col-lg-12">
-                <h4 className="title">{ value.title }</h4>
+                <a href={`/forum/${value._id}`}><h4>{ value.title }</h4></a>
                 <small>posted by: <b>{ value.user.fullname }</b> on <b>{moment(value.date).format("LL") }</b> at <b> { moment(value.date).format("hh:mm a") }</b></small>
                 <br/>
                 <p>file(s) included <b>{ value.files.length }</b></p>
