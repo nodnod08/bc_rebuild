@@ -22,7 +22,6 @@ class Forums extends React.Component {
 
   getPosts = () => {
     axios.get('/post/getAllPosts').then(response => {
-      console.log(response.data.result)
       this.setState({
         ...this.state, posts: response.data.result
       })
